@@ -1,0 +1,10 @@
+.filters {
+  position: fixed;
+  right: 0;
+  top: 68px;
+  padding: 10px;
+  width: 20%;
+  box-sizing: border-box;
+  height: 100vh;
+  border-left: 1px solid #767676;
+}

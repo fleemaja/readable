@@ -1,0 +1,24 @@
+nav {
+  padding: 0px 40px;
+  border-bottom: 1px solid #767676;
+  background: white;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 99999999;
+}
+
+.RedCircle {
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  background: #ff5252;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.LogoFont {
+  display: inline-block;
+  vertical-align: middle;
+}
