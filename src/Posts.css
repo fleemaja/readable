@@ -1,5 +1,5 @@
 .Posts {
-  width: 80%;
+  width: calc(100% - 250px);
   position: absolute;
   top: 68px;
   left: 0;

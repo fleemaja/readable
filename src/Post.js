@@ -3,13 +3,15 @@ import './Post.css';
 
 class Post extends Component {
   render() {
+    const post = this.props.post;
     return (
       <div className="Post">
-        <p>Title</p>
-        <p>Body</p>
-        <p>Author</p>
-        <p>Category</p>
-        <p>Timestamp</p>
+        <strong>{`voteScore: ${post.voteScore}`}</strong>
+        <p>{ post.title }</p>
+        <p>{ post.body }</p>
+        <p>{ post.author }</p>
+        <p>{ post.category}</p>
+        <p>{ post.timestamp}</p>
       </div>
     )
   }

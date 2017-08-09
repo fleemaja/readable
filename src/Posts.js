@@ -4,13 +4,11 @@ import './Posts.css';
 
 class Posts extends Component {
   render() {
-    let posts = [];
-    for (var i = 0; i < 15; i++) {
-      posts.push(<Post />)
-    }
     return (
       <div className="Posts">
-        { posts }
+        {
+          this.props.posts.map((p) => <Post key={p.timestamp} post={p} />)
+        }
       </div>
     )
   }
