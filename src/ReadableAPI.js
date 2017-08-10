@@ -42,13 +42,24 @@ export const getAllCategories = () =>
 //     body: JSON.stringify({ shelf })
 //   }).then(res => res.json())
 //
-// export const search = (query, maxResults) =>
-//   fetch(`${api}/search`, {
-//     method: 'POST',
-//     headers: {
-//       ...headers,
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify({ query, maxResults })
-//   }).then(res => res.json())
-//     .then(data => data.books)
+export const postVote = (id, option) =>
+  fetch(`${api}/posts/${id}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ option })
+  }).then(res => res.json())
+    .then(data => data)
+
+export const commentVote = (id, option) =>
+  fetch(`${api}/comments/${id}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ option })
+  }).then(res => res.json())
+    .then(data => data)

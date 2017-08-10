@@ -1,22 +1,41 @@
 import React, { Component } from 'react';
+import * as ReadableAPI from './ReadableAPI';
 import { Link } from 'react-router-dom';
 
 class Comment extends Component {
+
+  state = {
+    comment: {}
+  }
+
+  componentWillMount() {
+    this.setState({ comment: this.props.comment });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ comment: nextProps.comment });
+  }
+
+  vote(e) {
+    const voteType = e.target.value;
+    const commentId = this.props.comment.id;
+
+    ReadableAPI.commentVote(commentId, voteType).then((comment) => this.setState({comment}))
+  }
+
   render() {
-    const comment = this.props.comment;
-    if (comment) {
-      return (
-          <div className="Comment">
-            <strong>{`voteScore: ${comment.voteScore}`}</strong>
-            <p>{ comment.title }</p>
-            <p>{ comment.body }</p>
-            <p>{ comment.author }</p>
-            <p>{ comment.timestamp}</p>
-          </div>
-        )
-    } else {
-      return (<div>Loading...</div>)
-    }
+    const comment = this.state.comment;
+    return (
+      <div className="Comment">
+        <input type="button" value="upVote" onClick={this.vote.bind(this)} />
+        <input type="button" value="downVote" onClick={this.vote.bind(this)} />
+        <strong>{`voteScore: ${comment.voteScore}`}</strong>
+        <p>{ comment.title }</p>
+        <p>{ comment.body }</p>
+        <p>{ comment.author }</p>
+        <p>{ comment.timestamp}</p>
+      </div>
+    )
   }
 }
 
