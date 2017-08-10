@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Post from './Post';
 import Comments from './Comments';
 import * as ReadableAPI from './ReadableAPI';
-import { Link } from 'react-router-dom';
+import NavBar from './NavBar';
+import AddCommentForm from './AddCommentForm';
 import './ShowPost.css';
 
 class ShowPost extends Component {
@@ -24,8 +25,9 @@ class ShowPost extends Component {
     const comments = this.state.comments
     return (
       <div>
-        <Link to="/">Home</Link>
+        <NavBar />
         <Post post={post} />
+        <AddCommentForm />
         <Comments comments={comments} />
       </div>
     )
