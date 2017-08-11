@@ -9,7 +9,8 @@ import './ShowPost.css';
 class ShowPost extends Component {
   state = {
     post: {},
-    comments: []
+    comments: [],
+    sortKey: ''
   }
 
   componentWillMount = () => {
@@ -17,11 +18,32 @@ class ShowPost extends Component {
     ReadableAPI.getPost(postId)
                .then((post) => this.setState({post}))
     ReadableAPI.getPostComments(postId)
-               .then((comments) => this.setState({comments}))
+               .then((comments) => {
+                 this.setState({ comments })
+                 this.sortComments('voteScore')
+               })
+  }
+
+  handleSortChange = (e) => {
+    const sortKey = e.target.value;
+    this.sortComments(sortKey);
+  }
+
+  sortComments(sortKey) {
+    this.setState({ sortKey });
+    const comments = this.state.comments.sort(this.sortByKey(sortKey).bind(this));
+    this.setState({ comments });
+  }
+
+  sortByKey(sortKey) {
+    return function(a, b) {
+      return a[sortKey] < b[sortKey];
+    }
   }
 
   addComment(comment) {
     const comments = [comment, ...this.state.comments];
+    this.sortComments(this.state.sortKey);
     this.setState({ comments })
   }
 
@@ -34,6 +56,16 @@ class ShowPost extends Component {
         <Post post={post} />
         <AddCommentForm addComment={this.addComment.bind(this)}
                         parentId={post.id} />
+        {
+          <select value={this.state.sortKey} onChange={this.handleSortChange.bind(this)} >
+            <option value="voteScore" selected={this.state.sortKey == 'voteScore'} >
+              Most Votes
+            </option>
+            <option value="timestamp" selected={this.state.sortKey == 'timestamp'}>
+              Most Recent
+            </option>
+          </select>
+        }
         <Comments comments={comments} />
       </div>
     )

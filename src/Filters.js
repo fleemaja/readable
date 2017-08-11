@@ -6,7 +6,8 @@ import './Filters.css';
 class Filters extends Component {
   state = {
     categories: [],
-    category: ''
+    category: '',
+    sortKey: 'voteScore'
   }
 
   componentWillMount = () => {
@@ -16,6 +17,12 @@ class Filters extends Component {
   componentWillReceiveProps = (newVal) => {
     const category = newVal.match.params.category || '';
     this.setState({ category });
+  }
+
+  handleSortChange = (e) => {
+    const sortKey = e.target.value;
+    this.setState({ sortKey });
+    this.props.sortPosts(sortKey);
   }
 
   render() {
@@ -39,6 +46,16 @@ class Filters extends Component {
               </Link>
             )
           })
+        }
+        {
+          <select value={this.state.sortKey} onChange={this.handleSortChange.bind(this)} >
+            <option value="voteScore" selected={this.state.sortKey == 'voteScore'} >
+              Most Votes
+            </option>
+            <option value="timestamp" selected={this.state.sortKey == 'timestamp'}>
+              Most Recent
+            </option>
+          </select>
         }
       </div>
     )
