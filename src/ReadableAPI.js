@@ -58,6 +58,31 @@ export const addComment = (parentId, body, author) =>
   }).then(res => res.json())
     .then(data => data)
 
+export const addPost = (author, body, title, category) =>
+  fetch(`${api}/posts`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      author, body, title, category,
+      timestamp: Date.now(),
+      id: uuidv1()
+    })
+  }).then(res => res.json())
+    .then(data => data)
+
+export const deletePost = (id) =>
+  fetch(`${api}/posts/${id}`, {
+    method: 'DELETE',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json())
+    .then(data => data)
+
 export const deleteComment = (id) =>
   fetch(`${api}/comments/${id}`, {
     method: 'DELETE',

@@ -21,7 +21,11 @@ class AddPostForm extends React.Component {
 
     this.state = {
       modalIsOpen: false,
-      categories: []
+      categories: [],
+      author: '',
+      body: '',
+      title: '',
+      category: ''
     };
 
     this.openModal = this.openModal.bind(this);
@@ -31,6 +35,31 @@ class AddPostForm extends React.Component {
 
   componentWillMount() {
     ReadableAPI.getAllCategories().then((categories) => this.setState({categories}))
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    const author = this.state.author;
+    const body = this.state.body;
+    const title = this.state.title;
+    const category = this.state.category;
+
+    ReadableAPI.addPost(author, body, title, category)
+               .then((p) => {
+                 this.props.addPost(p)
+                 this.closeModal()
+               });
+  }
+
+  handleInput(e) {
+    const newVal = e.target.value;
+    const property = e.target.name;
+
+    let stateObj = Object.assign({}, this.state);
+    stateObj[property] = newVal;
+
+    this.setState(stateObj);
   }
 
   openModal() {
@@ -59,12 +88,20 @@ class AddPostForm extends React.Component {
         >
 
           <h2 ref={subtitle => this.subtitle = subtitle}>Add a New Post</h2>
-          <button onClick={this.closeModal}>X</button>
-          <form>
-            <input type="text" placeholder="post author"/>
-            <input type="text" placeholder="post title"/>
-            <textarea placeholder="post body" />
-            <select>
+          <button onClick={this.closeModal}>CLOSE</button>
+          <form onSubmit={this.handleSubmit.bind(this)}>
+            <input type="text" placeholder="post author"
+                   name="author" value={this.state.author}
+                   onChange={this.handleInput.bind(this)} />
+            <input type="text" placeholder="post title"
+                   name="title" value={this.state.title}
+                   onChange={this.handleInput.bind(this)} />
+            <textarea placeholder="post body" name="body"
+                      value={this.state.body}
+                      onChange={this.handleInput.bind(this)} />
+            <select name="category"
+                    value={this.state.category}
+                    onChange={this.handleInput.bind(this)} >
               {
                 this.state.categories.map((c) =>
                   <option value={c.name}>{c.name}</option>

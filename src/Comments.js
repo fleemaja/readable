@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Comment from './Comment';
-import * as ReadableAPI from './ReadableAPI';
 
 class Comments extends Component {
   state = {

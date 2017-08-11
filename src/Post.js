@@ -17,6 +17,12 @@ class Post extends Component {
     this.setState({ post: nextProps.post });
   }
 
+  deletePost() {
+    const postId = this.state.post.id;
+    ReadableAPI.deletePost(postId);
+    this.props.updatePosts(postId);
+  }
+
   vote(e) {
     const voteType = e.target.value;
     const postId = this.props.post.id;
@@ -37,8 +43,9 @@ class Post extends Component {
             <Link to={`/${post.category}/${post.id}`}>{ post.title }</Link>
             <p>{ post.body }</p>
             <p>{ post.author }</p>
-            <p>{ post.category}</p>
-            <p>{ post.timestamp}</p>
+            <p>{ post.category }</p>
+            <p>{ post.timestamp }</p>
+            <input type="button" value="DELETE" onClick={this.deletePost.bind(this)} />
           </div>
         )
     }

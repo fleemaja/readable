@@ -12,8 +12,16 @@ class App extends Component {
     posts: []
   }
 
+  addPost(post) {
+    const posts = [post, ...this.state.posts];
+    this.setState({ posts })
+  }
+
   componentWillMount = () => {
-    ReadableAPI.getAllPosts().then((posts) => this.setState({posts}))
+    ReadableAPI.getAllPosts().then((posts) => {
+      const activePosts = posts.filter(p => p.deleted == false)
+      this.setState({ posts: activePosts })
+    })
   }
 
   render() {
@@ -22,7 +30,8 @@ class App extends Component {
         <Route exact path="/" render={() => (
               <div className="App">
                 <NavBar />
-                <Posts posts={this.state.posts}/>
+                <Posts addPost={this.addPost.bind(this)}
+                       posts={this.state.posts}/>
                 <Filters />
               </div>
             )}
