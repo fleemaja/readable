@@ -5,7 +5,8 @@ import './Posts.css';
 
 class Posts extends Component {
   state = {
-    posts: []
+    posts: [],
+    category: ''
   }
 
   updatePosts(deletedId) {
@@ -18,7 +19,13 @@ class Posts extends Component {
   }
 
   componentWillReceiveProps(newVal) {
-    this.setState({ posts: newVal.posts });
+    const category = newVal.match.params.category || '';
+    let posts = newVal.posts;
+    this.setState({ category });
+    if (category) {
+      posts = posts.filter(p => p.category === category)
+    }
+    this.setState({ posts });
   }
   render() {
     return (

@@ -27,12 +27,13 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Route exact path="/" render={() => (
+        <Route exact path="/:category?" render={(props) => (
               <div className="App">
                 <NavBar />
                 <Posts addPost={this.addPost.bind(this)}
-                       posts={this.state.posts}/>
-                <Filters />
+                       posts={this.state.posts}
+                       {...props} />
+                <Filters {...props} />
               </div>
             )}
           />

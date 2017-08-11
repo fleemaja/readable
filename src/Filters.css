@@ -8,3 +8,7 @@
   height: 100vh;
   border-left: 1px solid #767676;
 }
+
+label {
+  display: block;
+}
