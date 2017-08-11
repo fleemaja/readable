@@ -1,5 +1,6 @@
 const api = "http://localhost:5001"
 
+const uuidv1 = require('uuid/v1');
 
 // Generate a unique token for storing your bookshelf data on the backend server.
 let token = localStorage.token
@@ -42,6 +43,31 @@ export const getAllCategories = () =>
 //     body: JSON.stringify({ shelf })
 //   }).then(res => res.json())
 //
+export const addComment = (parentId, body, author) =>
+  fetch(`${api}/comments`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      parentId, body, author,
+      timestamp: Date.now(),
+      id: uuidv1()
+    })
+  }).then(res => res.json())
+    .then(data => data)
+
+export const deleteComment = (id) =>
+  fetch(`${api}/comments/${id}`, {
+    method: 'DELETE',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json())
+    .then(data => data)
+
 export const postVote = (id, option) =>
   fetch(`${api}/posts/${id}`, {
     method: 'POST',

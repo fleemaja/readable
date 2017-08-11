@@ -8,6 +8,12 @@ class Comment extends Component {
     comment: {}
   }
 
+  deleteComment() {
+    const commentId = this.state.comment.id;
+    ReadableAPI.deleteComment(commentId)
+               .then((data) => this.props.updateComments(data));
+  }
+
   componentWillMount() {
     this.setState({ comment: this.props.comment });
   }
@@ -34,6 +40,7 @@ class Comment extends Component {
         <p>{ comment.body }</p>
         <p>{ comment.author }</p>
         <p>{ comment.timestamp}</p>
+        <input type="button" value="DELETE" onClick={this.deleteComment.bind(this)} />
       </div>
     )
   }
