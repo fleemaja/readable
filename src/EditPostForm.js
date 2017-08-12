@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import * as ReadableAPI from './ReadableAPI';
-import './AddPostForm.css';
+import './EditPostForm.css';
 
 const customStyles = {
   content : {
@@ -15,7 +15,7 @@ const customStyles = {
   }
 };
 
-class AddPostForm extends React.Component {
+class EditPostForm extends React.Component {
   constructor() {
     super();
 
@@ -34,6 +34,8 @@ class AddPostForm extends React.Component {
   }
 
   componentWillMount() {
+    const post = this.props.post;
+    this.setState({ author: post.author, body: post.body, title: post.title, category: post.category })
     ReadableAPI.getAllCategories().then((categories) => this.setState({categories}))
   }
 
@@ -44,10 +46,11 @@ class AddPostForm extends React.Component {
     const body = this.state.body;
     const title = this.state.title;
     const category = this.state.category;
+    const postId = this.props.post.id;
 
-    ReadableAPI.addPost(author, body, title, category)
+    ReadableAPI.editPost(postId, author, body, title, category)
                .then((p) => {
-                 this.props.addPost(p)
+                 this.props.editPost(p)
                  this.closeModal()
                });
   }
@@ -78,7 +81,7 @@ class AddPostForm extends React.Component {
   render() {
     return (
       <div className="modal">
-        <button className="add" onClick={this.openModal}>+ Add Post</button>
+        <button className="edit" onClick={this.openModal}>Edit Post</button>
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
@@ -116,4 +119,4 @@ class AddPostForm extends React.Component {
   }
 }
 
-export default AddPostForm;
+export default EditPostForm;

@@ -33,15 +33,28 @@ export const getAllCategories = () =>
     .then(res => res.json())
     .then(data => data.categories)
 
-// export const update = (book, shelf) =>
-//   fetch(`${api}/books/${book.id}`, {
-//     method: 'PUT',
-//     headers: {
-//       ...headers,
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify({ shelf })
-//   }).then(res => res.json())
+export const editPost = (postId, author, title, body, category) =>
+  fetch(`${api}/posts/${postId}`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ author, body, title, category })
+  }).then(res => res.json())
+    .then(data => data)
+
+export const editComment = (commentId, author, body) =>
+  fetch(`${api}/comments/${commentId}`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ author, body })
+  }).then(res => res.json())
+    .then(data => data)
+
 //
 export const addComment = (parentId, body, author) =>
   fetch(`${api}/comments`, {

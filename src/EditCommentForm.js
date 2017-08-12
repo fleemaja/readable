@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import * as ReadableAPI from './ReadableAPI';
-import './AddPostForm.css';
+import './EditCommentForm.css';
 
 const customStyles = {
   content : {
@@ -15,17 +15,14 @@ const customStyles = {
   }
 };
 
-class AddPostForm extends React.Component {
+class EditCommentForm extends React.Component {
   constructor() {
     super();
 
     this.state = {
       modalIsOpen: false,
-      categories: [],
       author: '',
-      body: '',
-      title: '',
-      category: ''
+      body: ''
     };
 
     this.openModal = this.openModal.bind(this);
@@ -34,7 +31,8 @@ class AddPostForm extends React.Component {
   }
 
   componentWillMount() {
-    ReadableAPI.getAllCategories().then((categories) => this.setState({categories}))
+    const comment = this.props.comment;
+    this.setState({ author: comment.author, body: comment.body })
   }
 
   handleSubmit(e) {
@@ -42,12 +40,11 @@ class AddPostForm extends React.Component {
 
     const author = this.state.author;
     const body = this.state.body;
-    const title = this.state.title;
-    const category = this.state.category;
+    const commentId = this.props.comment.id;
 
-    ReadableAPI.addPost(author, body, title, category)
-               .then((p) => {
-                 this.props.addPost(p)
+    ReadableAPI.editComment(commentId, author, body)
+               .then((c) => {
+                 this.props.editComment(c)
                  this.closeModal()
                });
   }
@@ -72,13 +69,13 @@ class AddPostForm extends React.Component {
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
+    this.setState({ modalIsOpen: false });
   }
 
   render() {
     return (
       <div className="modal">
-        <button className="add" onClick={this.openModal}>+ Add Post</button>
+        <button className="edit" onClick={this.openModal}>Edit Comment</button>
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
@@ -87,27 +84,15 @@ class AddPostForm extends React.Component {
           contentLabel="Example Modal"
         >
 
-          <h2 ref={subtitle => this.subtitle = subtitle}>Add a New Post</h2>
+          <h2 ref={subtitle => this.subtitle = subtitle}>Add a New Comment</h2>
           <button onClick={this.closeModal}>CLOSE</button>
           <form onSubmit={this.handleSubmit.bind(this)}>
-            <input type="text" placeholder="post author"
+            <input type="text" placeholder="comment author"
                    name="author" value={this.state.author}
                    onChange={this.handleInput.bind(this)} />
-            <input type="text" placeholder="post title"
-                   name="title" value={this.state.title}
-                   onChange={this.handleInput.bind(this)} />
-            <textarea placeholder="post body" name="body"
+            <textarea placeholder="comment body" name="body"
                       value={this.state.body}
                       onChange={this.handleInput.bind(this)} />
-            <select name="category"
-                    value={this.state.category}
-                    onChange={this.handleInput.bind(this)} >
-              {
-                this.state.categories.map((c) =>
-                  <option value={c.name}>{c.name}</option>
-                )
-              }
-            </select>
             <input type="submit" />
           </form>
         </Modal>
@@ -116,4 +101,4 @@ class AddPostForm extends React.Component {
   }
 }
 
-export default AddPostForm;
+export default EditCommentForm;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as ReadableAPI from './ReadableAPI';
 import { Link } from 'react-router-dom';
+import EditCommentForm from './EditCommentForm';
 
 class Comment extends Component {
 
@@ -29,6 +30,10 @@ class Comment extends Component {
     ReadableAPI.commentVote(commentId, voteType).then((comment) => this.setState({comment}))
   }
 
+  editComment(editedComment) {
+    this.setState({ comment: editedComment });
+  }
+
   render() {
     const comment = this.state.comment;
     return (
@@ -41,6 +46,7 @@ class Comment extends Component {
         <p>{ comment.author }</p>
         <p>{ comment.timestamp}</p>
         <input type="button" value="DELETE" onClick={this.deleteComment.bind(this)} />
+        <EditCommentForm comment={comment} editComment={this.editComment.bind(this)} />
       </div>
     )
   }
