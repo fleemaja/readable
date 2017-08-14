@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import Post from './Post';
 import Comments from './Comments';
-import * as ReadableAPI from './ReadableAPI';
+import * as ReadableAPI from '../utils/ReadableAPI';
 import NavBar from './NavBar';
 import AddCommentForm from './AddCommentForm';
-import './ShowPost.css';
 
 class ShowPost extends Component {
   state = {
@@ -58,10 +57,10 @@ class ShowPost extends Component {
                         parentId={post.id} />
         {
           <select value={this.state.sortKey} onChange={this.handleSortChange.bind(this)} >
-            <option value="voteScore" selected={this.state.sortKey == 'voteScore'} >
+            <option value="voteScore" selected={this.state.sortKey === 'voteScore'} >
               Most Votes
             </option>
-            <option value="timestamp" selected={this.state.sortKey == 'timestamp'}>
+            <option value="timestamp" selected={this.state.sortKey === 'timestamp'}>
               Most Recent
             </option>
           </select>

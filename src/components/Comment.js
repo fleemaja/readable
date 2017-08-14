@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import * as ReadableAPI from './ReadableAPI';
-import { Link } from 'react-router-dom';
+import * as ReadableAPI from '../utils/ReadableAPI';
 import EditCommentForm from './EditCommentForm';
 
 class Comment extends Component {

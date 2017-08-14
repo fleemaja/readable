@@ -3,3 +3,72 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+/* AddPostForm */
+button.add {
+  border: none;
+  color: white;
+  font-size: 18px;
+  border-radius: 5px;
+}
+
+.modal {
+  display: inline;
+  vertical-align: middle;
+}
+
+/* filters */
+.filters {
+  position: fixed;
+  right: 0;
+  top: 68px;
+  padding: 10px;
+  width: 250px;
+  box-sizing: border-box;
+  height: 100vh;
+  border-left: 1px solid #767676;
+}
+
+label {
+  display: block;
+}
+
+/* NavBar */
+nav {
+  padding: 0px 40px;
+  border-bottom: 1px solid #767676;
+  background: white;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+}
+
+.RedCircle {
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  background: #ff5252;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.LogoFont {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Post */
+.Post {
+  border: 1px solid #767676;
+  padding: 10px 40px;
+}
+
+/* Posts */
+.Posts {
+  width: calc(100% - 250px);
+  position: absolute;
+  top: 68px;
+  left: 0;
+  z-index: -999999;
+}

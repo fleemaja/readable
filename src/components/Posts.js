@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Post from './Post';
 import AddPostForm from './AddPostForm';
-import './Posts.css';
 
 class Posts extends Component {
   state = {
@@ -10,7 +9,7 @@ class Posts extends Component {
   }
 
   updatePosts(deletedId) {
-    const posts = this.state.posts.filter(c => c.id != deletedId);
+    const posts = this.state.posts.filter(c => c.id !== deletedId);
     this.setState({ posts });
   }
 

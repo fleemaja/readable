@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
-import * as ReadableAPI from './ReadableAPI';
-import './AddPostForm.css';
+import * as ReadableAPI from '../utils/ReadableAPI';
 
 const customStyles = {
   content : {
@@ -15,7 +13,7 @@ const customStyles = {
   }
 };
 
-class AddPostForm extends React.Component {
+class AddPostForm extends Component {
   constructor() {
     super();
 

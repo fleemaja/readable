@@ -7,7 +7,7 @@ class Comments extends Component {
   }
 
   updateComments(deletedComment) {
-    const comments = this.state.comments.filter(c => c.id != deletedComment.id);
+    const comments = this.state.comments.filter(c => c.id !== deletedComment.id);
     this.setState({ comments });
   }
 

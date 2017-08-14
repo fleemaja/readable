@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as ReadableAPI from './ReadableAPI';
+import * as ReadableAPI from '../utils/ReadableAPI';
 
 class AddCommentForm extends Component {
   state = {
@@ -9,7 +9,7 @@ class AddCommentForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    
+
     const author = this.state.author;
     const body = this.state.body;
     const parentId = this.props.parentId;

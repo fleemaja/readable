@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import * as ReadableAPI from './ReadableAPI';
+import * as ReadableAPI from '../utils/ReadableAPI';
 import { Link } from 'react-router-dom';
 import EditPostForm from './EditPostForm';
-import './Post.css';
 
 class Post extends Component {
 

@@ -4,8 +4,7 @@ import NavBar from './NavBar';
 import Posts from './Posts';
 import ShowPost from './ShowPost';
 import Filters from './Filters';
-import * as ReadableAPI from './ReadableAPI';
-import './App.css';
+import * as ReadableAPI from '../utils/ReadableAPI';
 
 class App extends Component {
   state = {
@@ -32,7 +31,7 @@ class App extends Component {
 
   componentWillMount = () => {
     ReadableAPI.getAllPosts().then((posts) => {
-      const activePosts = posts.filter(p => p.deleted == false)
+      const activePosts = posts.filter(p => p.deleted === false)
       this.setState({ posts: activePosts })
       this.sortPosts('voteScore')
     })
