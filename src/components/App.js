@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { fetchPosts } from '../actions'
 import NavBar from './NavBar';
 import Posts from './Posts';
 import ShowPost from './ShowPost';
@@ -9,7 +11,7 @@ import * as ReadableAPI from '../utils/ReadableAPI';
 class App extends Component {
   state = {
     posts: [],
-    sortKey: ''
+    sortKey: 'voteScore'
   }
 
   addPost(post) {
@@ -30,11 +32,13 @@ class App extends Component {
   }
 
   componentWillMount = () => {
-    ReadableAPI.getAllPosts().then((posts) => {
-      const activePosts = posts.filter(p => p.deleted === false)
-      this.setState({ posts: activePosts })
-      this.sortPosts('voteScore')
-    })
+    this.props.getPosts();
+  }
+
+  componentWillReceiveProps(newVal) {
+    const newPosts = newVal.posts;
+    const activePosts = newPosts.filter(p => p.deleted === false);
+    this.setState({ posts: activePosts });
   }
 
   render() {
@@ -58,4 +62,19 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps (state) {
+  return {
+    posts: state.posts
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getPosts: () => dispatch(fetchPosts())
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
