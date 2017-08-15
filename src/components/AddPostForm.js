@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import * as ReadableAPI from '../utils/ReadableAPI';
-import { fetchCategories } from '../actions';
+import { fetchCategories, apiAddPost } from '../actions';
 import { connect } from 'react-redux';
 
 const customStyles = {
@@ -50,11 +49,8 @@ class AddPostForm extends Component {
     const title = this.state.title;
     const category = this.state.category;
 
-    ReadableAPI.addPost(author, body, title, category)
-               .then((p) => {
-                 this.props.addPost(p)
-                 this.closeModal()
-               });
+    this.props.addPost(author, body, title, category);
+    this.closeModal();
   }
 
   handleInput(e) {
@@ -129,6 +125,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    addPost: (author, body, title, category) =>
+      dispatch(apiAddPost(author, body, title, category)),
     getCategories: () => dispatch(fetchCategories())
   }
 }

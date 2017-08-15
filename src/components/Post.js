@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import * as ReadableAPI from '../utils/ReadableAPI';
 import { Link } from 'react-router-dom';
 import EditPostForm from './EditPostForm';
-import { apiPostVote } from '../actions';
+import { apiPostVote, apiPostDelete } from '../actions';
 import { connect } from 'react-redux';
 
 class Post extends Component {
@@ -22,8 +21,7 @@ class Post extends Component {
 
   deletePost() {
     const postId = this.state.post.id;
-    ReadableAPI.deletePost(postId);
-    this.props.updatePosts(postId);
+    this.props.deletePost(postId);
   }
 
   vote(e) {
@@ -68,6 +66,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    deletePost: (id) => dispatch(apiPostDelete(id)),
     postVote: (id, vote) => dispatch(apiPostVote(id, vote))
   }
 }

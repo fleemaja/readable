@@ -14,11 +14,6 @@ class App extends Component {
     sortKey: 'voteScore'
   }
 
-  addPost(post) {
-    const posts = [post, ...this.state.posts];
-    this.setState({ posts })
-  }
-
   sortPosts(sortKey) {
     this.setState({ sortKey });
     const posts = this.state.posts.sort(this.sortByKey(sortKey).bind(this));
@@ -48,9 +43,7 @@ class App extends Component {
           <Route exact path="/:category?" render={(props) => (
                 <div className="App">
                   <NavBar />
-                  <Posts addPost={this.addPost.bind(this)}
-                         posts={this.state.posts}
-                         {...props} />
+                  <Posts posts={this.state.posts} {...props} />
                   <Filters sortPosts={this.sortPosts.bind(this)}
                            {...props} />
                 </div>

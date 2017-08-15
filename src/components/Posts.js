@@ -8,11 +8,6 @@ class Posts extends Component {
     category: ''
   }
 
-  updatePosts(deletedId) {
-    const posts = this.state.posts.filter(p => p.id !== deletedId);
-    this.setState({ posts });
-  }
-
   componentWillMount() {
     this.setState({ posts: this.props.posts });
   }
@@ -29,11 +24,10 @@ class Posts extends Component {
   render() {
     return (
       <div className="Posts">
-        <AddPostForm addPost={this.props.addPost.bind(this)} />
+        <AddPostForm />
         {
           this.state.posts.map((p) =>
             <Post key={p.timestamp}
-                  updatePosts={this.updatePosts.bind(this)}
                   post={p} />
           )
         }

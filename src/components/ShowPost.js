@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Post from './Post';
 import Comments from './Comments';
-import * as ReadableAPI from '../utils/ReadableAPI';
 import NavBar from './NavBar';
 import AddCommentForm from './AddCommentForm';
 import { fetchPosts, fetchPostComments } from '../actions';
@@ -50,12 +49,6 @@ class ShowPost extends Component {
     }
   }
 
-  addComment(comment) {
-    const comments = [comment, ...this.state.comments];
-    this.sortComments(this.state.sortKey);
-    this.setState({ comments })
-  }
-
   render() {
     const post = this.state.post;
     const comments = this.state.comments
@@ -63,8 +56,7 @@ class ShowPost extends Component {
       <div>
         <NavBar />
         <Post post={post} />
-        <AddCommentForm addComment={this.addComment.bind(this)}
-                        parentId={post.id} />
+        <AddCommentForm parentId={post.id} />
         {
           <select value={this.state.sortKey} onChange={this.handleSortChange.bind(this)} >
             <option value="voteScore" selected={this.state.sortKey === 'voteScore'} >

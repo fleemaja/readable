@@ -2,11 +2,14 @@ import { combineReducers } from 'redux'
 
 import {
   RECEIVE_POSTS,
-  RECEIVE_POST,
   RECEIVE_POST_COMMENTS,
   RECEIVE_CATEGORIES,
+  ADD_POST,
+  ADD_COMMENT,
   POST_VOTE,
-  COMMENT_VOTE
+  COMMENT_VOTE,
+  DELETE_POST,
+  DELETE_COMMENT
 } from '../actions'
 
 function posts(state = [], action) {
@@ -15,12 +18,19 @@ function posts(state = [], action) {
       return [
         ...action.posts
       ]
+    case ADD_POST :
+      return [
+        action.post,
+        ...state
+      ]
     case POST_VOTE :
       return state.map(post =>
         (post.id === action.id)
           ? {...post, voteScore: action.voteScore}
           : post
       )
+    case DELETE_POST :
+      return state.filter(p => p.id !== action.id)
     default :
       return state
   }
@@ -32,13 +42,19 @@ function comments(state = [], action) {
       return [
         ...action.comments
       ]
+    case ADD_COMMENT :
+      return [
+        action.comment,
+        ...state
+      ]
     case COMMENT_VOTE :
-      alert("COMMENT_VOTE")
       return state.map(comment =>
         (comment.id === action.id)
           ? {...comment, voteScore: action.voteScore}
           : comment
       )
+    case DELETE_COMMENT :
+      return state.filter(c => c.id !== action.id)
     default :
       return state
   }

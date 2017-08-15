@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import * as ReadableAPI from '../utils/ReadableAPI';
+import { apiAddComment } from '../actions';
+import { connect } from 'react-redux';
 
 class AddCommentForm extends Component {
   state = {
@@ -14,8 +15,7 @@ class AddCommentForm extends Component {
     const body = this.state.body;
     const parentId = this.props.parentId;
 
-    ReadableAPI.addComment(parentId, body, author)
-               .then((c) => this.props.addComment(c));
+    this.props.addComment(parentId, body, author);
   }
 
   handleInput(e) {
@@ -41,4 +41,20 @@ class AddCommentForm extends Component {
   }
 }
 
-export default AddCommentForm;
+function mapStateToProps (state) {
+  return {
+    comments: state.comments
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    addComment: (parentId, body, author) =>
+      dispatch(apiAddComment(parentId, body, author))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddCommentForm);
