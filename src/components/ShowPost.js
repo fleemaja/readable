@@ -4,23 +4,26 @@ import Comments from './Comments';
 import * as ReadableAPI from '../utils/ReadableAPI';
 import NavBar from './NavBar';
 import AddCommentForm from './AddCommentForm';
+import { fetchPost, fetchPostComments } from '../actions';
+import { connect } from 'react-redux';
 
 class ShowPost extends Component {
   state = {
     post: {},
     comments: [],
-    sortKey: ''
+    sortKey: 'voteScore'
   }
 
   componentWillMount = () => {
     const postId = this.props.match.params.postId;
-    ReadableAPI.getPost(postId)
-               .then((post) => this.setState({post}))
-    ReadableAPI.getPostComments(postId)
-               .then((comments) => {
-                 this.setState({ comments })
-                 this.sortComments('voteScore')
-               })
+    this.props.getPost(postId);
+    this.props.getPostComments(postId);
+  }
+
+  componentWillReceiveProps = (newVal) => {
+    const post = newVal.post;
+    const comments = newVal.comments;
+    this.setState({ post, comments });
   }
 
   handleSortChange = (e) => {
@@ -71,4 +74,21 @@ class ShowPost extends Component {
   }
 }
 
-export default ShowPost;
+function mapStateToProps (state) {
+  return {
+    post: state.post,
+    comments: state.comments
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getPost: (id) => dispatch(fetchPost(id)),
+    getPostComments: (id) => dispatch(fetchPostComments(id))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ShowPost);
