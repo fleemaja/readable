@@ -22,7 +22,6 @@ export const getPostComments = (postId) =>
     .then(res => res.json())
     .then(data => data)
 
-
 export const getAllPosts = () =>
   fetch(`${api}/posts`, { headers })
     .then(res => res.json())
@@ -55,7 +54,6 @@ export const editComment = (commentId, author, body) =>
   }).then(res => res.json())
     .then(data => data)
 
-//
 export const addComment = (parentId, body, author) =>
   fetch(`${api}/comments`, {
     method: 'POST',

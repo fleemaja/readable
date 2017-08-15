@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import * as ReadableAPI from '../utils/ReadableAPI';
 import { Link } from 'react-router-dom';
+import { fetchCategories } from '../actions';
+import { connect } from 'react-redux';
 
 class Filters extends Component {
   state = {
@@ -10,12 +11,13 @@ class Filters extends Component {
   }
 
   componentWillMount = () => {
-    ReadableAPI.getAllCategories().then((categories) => this.setState({categories}))
+    this.props.getCategories();
   }
 
   componentWillReceiveProps = (newVal) => {
     const category = newVal.match.params.category || '';
-    this.setState({ category });
+    const categories = newVal.categories;
+    this.setState({ category, categories });
   }
 
   handleSortChange = (e) => {
@@ -61,4 +63,19 @@ class Filters extends Component {
   }
 }
 
-export default Filters;
+function mapStateToProps (state) {
+  return {
+    categories: state.categories
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getCategories: () => dispatch(fetchCategories())
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Filters);

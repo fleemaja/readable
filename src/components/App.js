@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { fetchPosts } from '../actions'
+import { connect } from 'react-redux';
+import { fetchPosts } from '../actions';
 import NavBar from './NavBar';
 import Posts from './Posts';
 import ShowPost from './ShowPost';
 import Filters from './Filters';
-import * as ReadableAPI from '../utils/ReadableAPI';
+import { BrowserRouter, Switch } from 'react-router-dom';
 
 class App extends Component {
   state = {
@@ -43,21 +43,23 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <Route exact path="/:category?" render={(props) => (
-              <div className="App">
-                <NavBar />
-                <Posts addPost={this.addPost.bind(this)}
-                       posts={this.state.posts}
-                       {...props} />
-                <Filters sortPosts={this.sortPosts.bind(this)}
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/:category?" render={(props) => (
+                <div className="App">
+                  <NavBar />
+                  <Posts addPost={this.addPost.bind(this)}
+                         posts={this.state.posts}
                          {...props} />
-              </div>
-            )}
-          />
+                  <Filters sortPosts={this.sortPosts.bind(this)}
+                           {...props} />
+                </div>
+              )}
+            />
 
-        <Route path="/:category/:postId" component={ShowPost} />
-      </div>
+          <Route path="/:category/:postId" component={ShowPost} />
+        </Switch>
+      </BrowserRouter>
     );
   }
 }

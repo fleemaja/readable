@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
 import * as ReadableAPI from '../utils/ReadableAPI';
+import { fetchCategories } from '../actions';
+import { connect } from 'react-redux';
 
 const customStyles = {
   content : {
@@ -32,7 +34,12 @@ class AddPostForm extends Component {
   }
 
   componentWillMount() {
-    ReadableAPI.getAllCategories().then((categories) => this.setState({categories}))
+    this.props.getCategories();
+  }
+
+  componentWillReceiveProps = (newVal) => {
+    const categories = newVal.categories;
+    this.setState({ categories });
   }
 
   handleSubmit(e) {
@@ -114,4 +121,19 @@ class AddPostForm extends Component {
   }
 }
 
-export default AddPostForm;
+function mapStateToProps (state) {
+  return {
+    categories: state.categories
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getCategories: () => dispatch(fetchCategories())
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddPostForm);
