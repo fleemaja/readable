@@ -4,7 +4,7 @@ import Comments from './Comments';
 import * as ReadableAPI from '../utils/ReadableAPI';
 import NavBar from './NavBar';
 import AddCommentForm from './AddCommentForm';
-import { fetchPost, fetchPostComments } from '../actions';
+import { fetchPosts, fetchPostComments } from '../actions';
 import { connect } from 'react-redux';
 
 class ShowPost extends Component {
@@ -16,14 +16,21 @@ class ShowPost extends Component {
 
   componentWillMount = () => {
     const postId = this.props.match.params.postId;
-    this.props.getPost(postId);
+    this.props.getPosts();
     this.props.getPostComments(postId);
   }
 
   componentWillReceiveProps = (newVal) => {
-    const post = newVal.post;
+    const postId = this.props.match.params.postId;
     const comments = newVal.comments;
-    this.setState({ post, comments });
+    const posts = newVal.posts;
+    let post = {}
+    posts.forEach(p => {
+      if (p.id === postId) {
+        post = p;
+      }
+    });
+    this.setState({ comments, post });
   }
 
   handleSortChange = (e) => {
@@ -50,7 +57,7 @@ class ShowPost extends Component {
   }
 
   render() {
-    const post = this.state.post
+    const post = this.state.post;
     const comments = this.state.comments
     return (
       <div>
@@ -76,14 +83,14 @@ class ShowPost extends Component {
 
 function mapStateToProps (state) {
   return {
-    post: state.post,
+    posts: state.posts,
     comments: state.comments
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPost: (id) => dispatch(fetchPost(id)),
+    getPosts: () => dispatch(fetchPosts()),
     getPostComments: (id) => dispatch(fetchPostComments(id))
   }
 }

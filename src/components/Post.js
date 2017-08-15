@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import * as ReadableAPI from '../utils/ReadableAPI';
 import { Link } from 'react-router-dom';
 import EditPostForm from './EditPostForm';
+import { apiPostVote } from '../actions';
+import { connect } from 'react-redux';
 
 class Post extends Component {
 
@@ -10,7 +12,8 @@ class Post extends Component {
   }
 
   componentWillMount() {
-    this.setState({ post: this.props.post });
+    const post = this.props.post;
+    this.setState({ post });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -25,9 +28,9 @@ class Post extends Component {
 
   vote(e) {
     const voteType = e.target.value;
-    const postId = this.props.post.id;
+    const postId = this.state.post.id;
 
-    ReadableAPI.postVote(postId, voteType).then((post) => this.setState({post}))
+    this.props.postVote(postId, voteType);
   }
 
   editPost(editedPost) {
@@ -57,4 +60,19 @@ class Post extends Component {
   }
 }
 
-export default Post;
+function mapStateToProps (state) {
+  return {
+    posts: state.posts
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    postVote: (id, vote) => dispatch(apiPostVote(id, vote))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Post);

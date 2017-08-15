@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import * as ReadableAPI from '../utils/ReadableAPI';
 import EditCommentForm from './EditCommentForm';
+import { apiCommentVote } from '../actions';
+import { connect } from 'react-redux';
 
 class Comment extends Component {
 
@@ -25,8 +27,8 @@ class Comment extends Component {
   vote(e) {
     const voteType = e.target.value;
     const commentId = this.props.comment.id;
-
-    ReadableAPI.commentVote(commentId, voteType).then((comment) => this.setState({comment}))
+    
+    this.props.commentVote(commentId, voteType);
   }
 
   editComment(editedComment) {
@@ -51,4 +53,19 @@ class Comment extends Component {
   }
 }
 
-export default Comment;
+function mapStateToProps (state) {
+  return {
+    comments: state.comments
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    commentVote: (id, vote) => dispatch(apiCommentVote(id, vote))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Comment);

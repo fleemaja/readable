@@ -9,7 +9,7 @@ class Posts extends Component {
   }
 
   updatePosts(deletedId) {
-    const posts = this.state.posts.filter(c => c.id !== deletedId);
+    const posts = this.state.posts.filter(p => p.id !== deletedId);
     this.setState({ posts });
   }
 
