@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import * as ReadableAPI from '../utils/ReadableAPI';
 import EditCommentForm from './EditCommentForm';
-import { apiCommentVote } from '../actions';
+import { apiCommentVote, apiCommentDelete } from '../actions';
 import { connect } from 'react-redux';
 
 class Comment extends Component {
@@ -12,8 +11,7 @@ class Comment extends Component {
 
   deleteComment() {
     const commentId = this.state.comment.id;
-    ReadableAPI.deleteComment(commentId)
-               .then((data) => this.props.updateComments(data));
+    this.props.deleteComment(commentId);
   }
 
   componentWillMount() {
@@ -27,7 +25,7 @@ class Comment extends Component {
   vote(e) {
     const voteType = e.target.value;
     const commentId = this.props.comment.id;
-    
+
     this.props.commentVote(commentId, voteType);
   }
 
@@ -61,7 +59,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    commentVote: (id, vote) => dispatch(apiCommentVote(id, vote))
+    commentVote: (id, vote) => dispatch(apiCommentVote(id, vote)),
+    deleteComment: (id) => dispatch(apiCommentDelete(id))
   }
 }
 

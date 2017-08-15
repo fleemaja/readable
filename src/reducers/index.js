@@ -38,7 +38,6 @@ function posts(state = [], action) {
           : post
       )
     case DELETE_POST :
-      alert(action.id);
       return state.map(post =>
         (post.id === action.id)
           ? {...post, deleted: true}
@@ -73,11 +72,7 @@ function comments(state = [], action) {
           : comment
       )
     case DELETE_COMMENT :
-      return state.map(comment =>
-        (comment.id === action.id)
-          ? {...comment, deleted: true}
-          : comment
-      )
+      return state.filter(comment => (comment.id !== action.id))
     default :
       return state
   }
