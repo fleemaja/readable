@@ -13,6 +13,9 @@ export const DELETE_COMMENT = "DELETE_COMMENT";
 export const ADD_POST = "ADD_POST";
 export const ADD_COMMENT = "ADD_COMMENT";
 
+export const EDIT_POST = "EDIT_POST";
+export const EDIT_COMMENT = "EDIT_COMMENT";
+
 export const receivePosts = posts => ({
   type: RECEIVE_POSTS,
   posts
@@ -72,6 +75,20 @@ export function addComment(comment) {
   }
 };
 
+export function editPost(post) {
+  return {
+    type: EDIT_POST,
+    post
+  }
+};
+
+export function editComment(comment) {
+  return {
+    type: EDIT_COMMENT,
+    comment
+  }
+};
+
 export const apiAddPost = (author, body, title, category) => dispatch => (
   ReadableAPI
       .addPost(author, body, title, category)
@@ -82,6 +99,18 @@ export const apiAddComment = (parentId, body, author) => dispatch => (
   ReadableAPI
       .addComment(parentId, body, author)
       .then(comment => dispatch(addComment(comment)))
+);
+
+export const apiEditPost = (postId, author, body, title, category) => dispatch => (
+  ReadableAPI
+      .editPost(postId, author, body, title, category)
+      .then(post => dispatch(editPost(post)))
+);
+
+export const apiEditComment = (commentId, body, author) => dispatch => (
+  ReadableAPI
+      .editComment(commentId, body, author)
+      .then(comment => dispatch(editComment(comment)))
 );
 
 export const apiPostVote = (id, vote) => dispatch => (

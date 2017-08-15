@@ -49,8 +49,8 @@ class AddPostForm extends Component {
     const title = this.state.title;
     const category = this.state.category;
 
-    this.props.addPost(author, body, title, category);
-    this.closeModal();
+    this.props.addPost(author, body, title, category)
+              .then(this.closeModal());
   }
 
   handleInput(e) {

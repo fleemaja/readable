@@ -9,7 +9,9 @@ import {
   POST_VOTE,
   COMMENT_VOTE,
   DELETE_POST,
-  DELETE_COMMENT
+  DELETE_COMMENT,
+  EDIT_POST,
+  EDIT_COMMENT
 } from '../actions'
 
 function posts(state = [], action) {
@@ -23,6 +25,12 @@ function posts(state = [], action) {
         action.post,
         ...state
       ]
+    case EDIT_POST :
+      return state.map(post =>
+        (post.id === action.post.id)
+          ? {...action.post}
+          : post
+      )
     case POST_VOTE :
       return state.map(post =>
         (post.id === action.id)
@@ -52,6 +60,12 @@ function comments(state = [], action) {
         action.comment,
         ...state
       ]
+    case EDIT_COMMENT :
+      return state.map(comment =>
+        (comment.id === action.comment.id)
+          ? {...action.comment}
+          : comment
+      )
     case COMMENT_VOTE :
       return state.map(comment =>
         (comment.id === action.id)

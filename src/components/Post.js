@@ -31,10 +31,6 @@ class Post extends Component {
     this.props.postVote(postId, voteType);
   }
 
-  editPost(editedPost) {
-    this.setState({ post: editedPost });
-  }
-
   render() {
     const post = this.state.post;
     if (Object.keys(post).length === 0 && post.constructor === Object) {
@@ -51,7 +47,7 @@ class Post extends Component {
             <p>{ post.category }</p>
             <p>{ post.timestamp }</p>
             <input type="button" value="DELETE" onClick={this.deletePost.bind(this)} />
-            <EditPostForm post={post} editPost={this.editPost.bind(this)} />
+            <EditPostForm post={post} />
           </div>
         )
     }

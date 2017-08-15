@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import * as ReadableAPI from '../utils/ReadableAPI';
+import { apiEditComment } from '../actions';
+import { connect } from 'react-redux';
 
 const customStyles = {
   content : {
@@ -40,11 +41,8 @@ class EditCommentForm extends Component {
     const body = this.state.body;
     const commentId = this.props.comment.id;
 
-    ReadableAPI.editComment(commentId, author, body)
-               .then((c) => {
-                 this.props.editComment(c)
-                 this.closeModal()
-               });
+    this.props.editComment(commentId, author, body)
+              .then(this.closeModal());
   }
 
   handleInput(e) {
@@ -99,4 +97,20 @@ class EditCommentForm extends Component {
   }
 }
 
-export default EditCommentForm;
+function mapStateToProps (state) {
+  return {
+    comments: state.comments
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    editComment: (commentId, body, author) =>
+      dispatch(apiEditComment(commentId, body, author))
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditCommentForm);

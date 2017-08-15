@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import * as ReadableAPI from '../utils/ReadableAPI';
+import { fetchCategories, apiEditPost } from '../actions';
+import { connect } from 'react-redux';
 
 const customStyles = {
   content : {
@@ -34,7 +35,12 @@ class EditPostForm extends Component {
   componentWillMount() {
     const post = this.props.post;
     this.setState({ author: post.author, body: post.body, title: post.title, category: post.category })
-    ReadableAPI.getAllCategories().then((categories) => this.setState({categories}))
+    this.props.getCategories();
+  }
+
+  componentWillReceiveProps = (newVal) => {
+    const categories = newVal.categories;
+    this.setState({ categories });
   }
 
   handleSubmit(e) {
@@ -46,11 +52,8 @@ class EditPostForm extends Component {
     const category = this.state.category;
     const postId = this.props.post.id;
 
-    ReadableAPI.editPost(postId, author, body, title, category)
-               .then((p) => {
-                 this.props.editPost(p)
-                 this.closeModal()
-               });
+    this.props.editPost(postId, author, body, title, category)
+              .then(this.closeModal());
   }
 
   handleInput(e) {
@@ -117,4 +120,21 @@ class EditPostForm extends Component {
   }
 }
 
-export default EditPostForm;
+function mapStateToProps (state) {
+  return {
+    categories: state.categories
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    editPost: (postId, author, body, title, category) =>
+      dispatch(apiEditPost(postId, author, body, title, category)),
+    getCategories: () => dispatch(fetchCategories())
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditPostForm);
