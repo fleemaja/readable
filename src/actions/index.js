@@ -96,16 +96,14 @@ export const apiCommentVote = (id, vote) => dispatch => (
       .then(comment => dispatch(commentVote(comment.id, comment.voteScore)))
 );
 
-export const apiPostDelete = id => dispatch => (
-  ReadableAPI
-      .deletePost(id)
-      .then(post => dispatch(postDelete(post.id)))
+export const apiPostDelete = (id) => dispatch => (
+  ReadableAPI.deletePost(id)
+             .then(dispatch(postDelete(id)))
 );
 
-export const apiCommentDelete = id => dispatch => (
-  ReadableAPI
-      .deleteComment(id)
-      .then(comment => dispatch(commentDelete(comment.id)))
+export const apiCommentDelete = (id) => dispatch => (
+  ReadableAPI.deleteComment(id)
+             .then(dispatch(commentDelete(id)))
 );
 
 export const fetchPostComments = (id) => dispatch => (
