@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import { fetchCategories, apiEditPost } from '../actions';
 import { connect } from 'react-redux';
+import { FaEdit } from 'react-icons/lib/fa';
 
 const customStyles = {
   content : {
@@ -82,7 +83,7 @@ class EditPostForm extends Component {
   render() {
     return (
       <div className="modal">
-        <button className="edit" onClick={this.openModal}>Edit Post</button>
+        <FaEdit className="edit-button" onClick={this.openModal} />
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
@@ -91,7 +92,7 @@ class EditPostForm extends Component {
           contentLabel="Example Modal"
         >
 
-          <h2 ref={subtitle => this.subtitle = subtitle}>Add a New Post</h2>
+          <h2 ref={subtitle => this.subtitle = subtitle}>Edit Post</h2>
           <button onClick={this.closeModal}>CLOSE</button>
           <form onSubmit={this.handleSubmit.bind(this)}>
             <input type="text" placeholder="post author"

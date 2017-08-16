@@ -7,6 +7,7 @@ import Posts from './Posts';
 import ShowPost from './ShowPost';
 import Filters from './Filters';
 import { BrowserRouter, Switch } from 'react-router-dom';
+import AddPostForm from './AddPostForm';
 
 class App extends Component {
   state = {

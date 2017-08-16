@@ -5,7 +5,7 @@ class NavBar extends Component {
   render() {
     return (
       <nav>
-        <Link to="/">
+        <Link to="/" className="home-link">
           <div className="RedCircle"></div>
           <h1 className="LogoFont">readable</h1>
         </Link>

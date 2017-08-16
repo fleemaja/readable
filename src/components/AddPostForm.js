@@ -78,7 +78,7 @@ class AddPostForm extends Component {
 
   render() {
     return (
-      <div className="modal">
+      <div className="modal add-modal">
         <button className="add" onClick={this.openModal}>+ Add Post</button>
         <Modal
           isOpen={this.state.modalIsOpen}

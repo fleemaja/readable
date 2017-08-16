@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Post from './Post';
-import AddPostForm from './AddPostForm';
 
 class Posts extends Component {
   state = {
@@ -24,7 +23,6 @@ class Posts extends Component {
   render() {
     return (
       <div className="Posts">
-        <AddPostForm />
         {
           this.state.posts.map((p) =>
             <Post key={p.timestamp}
