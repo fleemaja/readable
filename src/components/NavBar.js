@@ -10,7 +10,10 @@ class NavBar extends Component {
           <div className="RedCircle"></div>
           <h1 className="LogoFont">readable</h1>
         </Link>
-        <FaBars className="hamburger" onClick={this.props.toggleFilters} />
+        {
+          !this.props.detail &&
+          <FaBars className="hamburger" onClick={this.props.toggleFilters} />
+        }
       </nav>
     )
   }

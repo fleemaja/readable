@@ -30,13 +30,22 @@ class AddCommentForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
-        <input type="text" placeholder="comment author" name="author"
-               value={this.state.author} onChange={this.handleInput.bind(this)} />
-        <input type="text" placeholder="add comment" name="body"
-               value={this.state.body} onChange={this.handleInput.bind(this)} />
-        <input type="submit" />
-      </form>
+      <div className="add-comment-form">
+        <h3>Add Comment</h3>
+        <form onSubmit={this.handleSubmit.bind(this)}>
+          <label for="add-author">
+            <p>Author</p>
+            <input type="text" placeholder="comment author" name="author" id="add-author"
+                   value={this.state.author} onChange={this.handleInput.bind(this)} />
+          </label>
+          <label for="add-body">
+            <p>Body</p>
+            <input type="text" placeholder="add comment" name="body"
+                   value={this.state.body} onChange={this.handleInput.bind(this)} />
+          </label>
+          <input type="submit" />
+        </form>
+      </div>
     )
   }
 }

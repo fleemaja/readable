@@ -54,20 +54,28 @@ class ShowPost extends Component {
     const comments = this.state.comments
     return (
       <div>
-        <NavBar />
-        <Post post={post} />
-        <AddCommentForm parentId={post.id} />
-        {
-          <select value={this.state.sortKey} onChange={this.handleSortChange.bind(this)} >
-            <option value="voteScore" selected={this.state.sortKey === 'voteScore'} >
-              Most Votes
-            </option>
-            <option value="timestamp" selected={this.state.sortKey === 'timestamp'}>
-              Most Recent
-            </option>
-          </select>
-        }
-        <Comments comments={comments} />
+        <NavBar detail={true} />
+        <Post post={post} detail={true} />
+        <div>
+          <AddCommentForm parentId={post.id} />
+          <div className="comments-content">
+            <h3>Comments</h3>
+            {
+              <label for="select-comments-sort" className="sort-comments-label">
+                <p>Sort By</p>
+                <select id="select-comments-sort" value={this.state.sortKey} onChange={this.handleSortChange.bind(this)} >
+                  <option value="voteScore" selected={this.state.sortKey === 'voteScore'} >
+                    Most Votes
+                  </option>
+                  <option value="timestamp" selected={this.state.sortKey === 'timestamp'}>
+                    Most Recent
+                  </option>
+                </select>
+              </label>
+            }
+            <Comments comments={comments} />
+          </div>
+        </div>
       </div>
     )
   }

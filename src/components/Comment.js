@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import EditCommentForm from './EditCommentForm';
 import { apiCommentVote, apiCommentDelete } from '../actions';
 import { connect } from 'react-redux';
+import { FaCaretUp, FaCaretDown, FaClose } from 'react-icons/lib/fa';
+import moment from 'moment';
 
 class Comment extends Component {
 
@@ -22,10 +24,8 @@ class Comment extends Component {
     this.setState({ comment: nextProps.comment });
   }
 
-  vote(e) {
-    const voteType = e.target.value;
+  vote(voteType) {
     const commentId = this.props.comment.id;
-
     this.props.commentVote(commentId, voteType);
   }
 
@@ -35,19 +35,30 @@ class Comment extends Component {
 
   render() {
     const comment = this.state.comment;
-    return (
-      <div className="Comment">
-        <input type="button" value="upVote" onClick={this.vote.bind(this)} />
-        <input type="button" value="downVote" onClick={this.vote.bind(this)} />
-        <strong>{`voteScore: ${comment.voteScore}`}</strong>
-        <p>{ comment.title }</p>
-        <p>{ comment.body }</p>
-        <p>{ comment.author }</p>
-        <p>{ comment.timestamp}</p>
-        <input type="button" value="DELETE" onClick={this.deleteComment.bind(this)} />
-        <EditCommentForm comment={comment} editComment={this.editComment.bind(this)} />
-      </div>
-    )
+    const timeAgo = moment(`${comment.timestamp}`, "x").fromNow();
+    if (Object.keys(comment).length === 0 && comment.constructor === Object) {
+      return (<div>Loading...</div>)
+    } else {
+      return (
+          <div className="Comment">
+            <div className="vote-component">
+              <FaCaretUp className="voteButton" onClick={this.vote.bind(this, "upVote")} />
+              <strong>{comment.voteScore}</strong>
+              <FaCaretDown className="voteButton" onClick={this.vote.bind(this, "downVote")} />
+            </div>
+            <div className="comment-info">
+              <p className="comment-body">{ comment.body }</p>
+              <p>
+                { `submitted ${timeAgo} from ${comment.author}` }
+              </p>
+              <div className="modify-buttons">
+                <FaClose className="delete-button" onClick={this.deleteComment.bind(this)} />
+                <EditCommentForm comment={comment} editComment={this.editComment.bind(this)} />
+              </div>
+            </div>
+          </div>
+        )
+    }
   }
 }
 
