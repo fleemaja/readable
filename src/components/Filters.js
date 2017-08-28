@@ -50,14 +50,17 @@ class Filters extends Component {
             })
           }
           {
-            <select value={this.state.sortKey} onChange={this.handleSortChange.bind(this)} >
-              <option value="voteScore" selected={this.state.sortKey === 'voteScore'} >
-                Most Votes
-              </option>
-              <option value="timestamp" selected={this.state.sortKey === 'timestamp'}>
-                Most Recent
-              </option>
-            </select>
+            <label for="select-sort" className="select-sort-label">
+              <h3>Sort Type</h3>
+              <select value={this.state.sortKey} onChange={this.handleSortChange.bind(this)} id="select-sort" >
+                <option value="voteScore" selected={this.state.sortKey === 'voteScore'} >
+                  Most Votes
+                </option>
+                <option value="timestamp" selected={this.state.sortKey === 'timestamp'}>
+                  Most Recent
+                </option>
+              </select>
+            </label>
           }
           <AddPostForm />
         </div>

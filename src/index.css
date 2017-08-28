@@ -5,6 +5,11 @@ body {
   color: rgba(0,0,0,0.54);
 }
 
+p {
+  margin: 0;
+  padding: 0;
+}
+
 a {
   color: rgba(0,0,0,0.54);
   text-decoration: none;
@@ -21,7 +26,8 @@ a {
 }
 
 /* AddPostForm */
-button.add {
+button.add,
+input[type="submit"] {
   border: none;
   color: white;
   background: #4FB99F;
@@ -29,6 +35,12 @@ button.add {
   font-size: 18px;
   border-radius: 5px;
   display: block;
+  cursor: pointer;
+}
+
+button.add {
+  margin-top: 60px;
+  width: 100%;
 }
 
 .vote-component {
@@ -69,6 +81,46 @@ button.add {
   vertical-align: middle;
 }
 
+.modal-title {
+  display: inline;
+  vertical-align: middle;
+  color: #4FB99F;
+}
+
+.modal-close {
+  display: inline;
+  cursor: pointer;
+  font-size: 2em;
+  vertical-align: middle;
+  float: right;
+  color: #333;
+}
+
+label {
+  display: block;
+  margin: 15px 0;
+}
+
+label input,
+label textarea {
+  min-width: 300px;
+  border-radius: 5px;
+  background: white;
+  border: 1px solid #333;
+  padding: 10px;
+}
+
+select {
+  background-color: white;
+  border: 1px solid #333;
+  font-family: Arial,sans-serif;
+  height: 35px;
+  letter-spacing: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
 /* filters */
 .filters {
   position: fixed;
@@ -80,9 +132,12 @@ button.add {
   height: 100vh;
   background: white;
   border-left: 1px solid #cbcbcb;
-  border-top: 1px solid #cbcbcb;
   transform: translateX(100%);
   -webkit-transform: translateX(100%);
+}
+
+.select-sort-label {
+  margin-top: 40px;
 }
 
 .slide-in {
@@ -111,10 +166,6 @@ button.add {
 @-webkit-keyframes slide-out {
     0% { -webkit-transform: translateX(0%); }
     100% { -webkit-transform: translateX(100%); }
-}
-
-label {
-  display: block;
 }
 
 /* NavBar */
@@ -149,14 +200,13 @@ nav {
 
 /* Post */
 .Post {
-  border: 1px solid #cbcbcb;
   padding: 10px 40px;
   z-index: -9999999999999;
 }
 
 /* Posts */
 .Posts {
-  width: calc(100% - 250px);
+  width: 100%;
   position: absolute;
   top: 68px;
   left: 0;
@@ -164,9 +214,6 @@ nav {
 }
 
 @media only screen and (max-width: 767px) {
-  .Posts {
-    width: 100%;
-  }
 
   .overlay {
     position: fixed;
