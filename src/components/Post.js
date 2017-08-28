@@ -26,10 +26,8 @@ class Post extends Component {
     this.props.deletePost(postId);
   }
 
-  vote(e) {
-    const voteType = e.target.getAttribute('data-vote');
+  vote(voteType) {
     const postId = this.state.post.id;
-
     this.props.postVote(postId, voteType);
   }
 
@@ -42,9 +40,9 @@ class Post extends Component {
       return (
           <div className="Post">
             <div className="vote-component">
-              <FaCaretUp className="voteButton" data-vote="upVote" onClick={this.vote.bind(this)} />
+              <FaCaretUp className="voteButton" onClick={this.vote.bind(this, "upVote")} />
               <strong>{post.voteScore}</strong>
-              <FaCaretDown className="voteButton" data-vote="downVote" onClick={this.vote.bind(this)} />
+              <FaCaretDown className="voteButton" onClick={this.vote.bind(this, "downVote")} />
             </div>
             <div className="post-info">
               <Link to={`/${post.category}/${post.id}`} className="title-link">{ post.title }</Link>

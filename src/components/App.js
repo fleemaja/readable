@@ -7,12 +7,12 @@ import Posts from './Posts';
 import ShowPost from './ShowPost';
 import Filters from './Filters';
 import { BrowserRouter, Switch } from 'react-router-dom';
-import AddPostForm from './AddPostForm';
 
 class App extends Component {
   state = {
     posts: [],
-    sortKey: 'voteScore'
+    sortKey: 'voteScore',
+    slideClass: 'slide-in'
   }
 
   sortPosts(sortKey) {
@@ -29,6 +29,10 @@ class App extends Component {
 
   componentWillMount = () => {
     this.props.getPosts();
+    const width = window.innerWidth;
+    if (width < 768) {
+      this.setState({ slideClass: 'slide-out' });
+    }
   }
 
   componentWillReceiveProps(newVal) {
@@ -37,15 +41,21 @@ class App extends Component {
     this.setState({ posts: activePosts });
   }
 
+  toggleFilters() {
+    const slideClass = this.state.slideClass === 'slide-in' ? 'slide-out' : 'slide-in';
+    this.setState({ slideClass });
+  }
+
   render() {
     return (
       <BrowserRouter>
         <Switch>
           <Route exact path="/:category?" render={(props) => (
                 <div className="App">
-                  <NavBar />
+                  <NavBar toggleFilters={this.toggleFilters.bind(this)} />
                   <Posts posts={this.state.posts} {...props} />
-                  <Filters sortPosts={this.sortPosts.bind(this)}
+                  <Filters slideClass={this.state.slideClass}
+                           sortPosts={this.sortPosts.bind(this)}
                            {...props} />
                 </div>
               )}

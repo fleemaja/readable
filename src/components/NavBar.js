@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { FaBars } from 'react-icons/lib/fa';
 
 class NavBar extends Component {
   render() {
@@ -9,6 +10,7 @@ class NavBar extends Component {
           <div className="RedCircle"></div>
           <h1 className="LogoFont">readable</h1>
         </Link>
+        <FaBars className="hamburger" onClick={this.props.toggleFilters} />
       </nav>
     )
   }
