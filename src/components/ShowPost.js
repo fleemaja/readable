@@ -16,14 +16,13 @@ class ShowPost extends Component {
   componentWillMount = () => {
     const postId = this.props.match.params.postId;
     const sortKey = this.state.sortKey;
-    this.props.getPosts();
     this.props.getPostComments(postId, sortKey);
   }
 
   componentWillReceiveProps = (newVal) => {
     const postId = this.props.match.params.postId;
     const comments = newVal.comments;
-    const posts = newVal.posts;
+    const posts = this.props.posts;
     let post = {}
     posts.forEach(p => {
       if (p.id === postId) {
@@ -85,7 +84,6 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPosts: () => dispatch(fetchPosts()),
     getPostComments: (id, sortKey) => dispatch(fetchPostComments(id, sortKey))
   }
 }

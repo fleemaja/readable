@@ -17,7 +17,9 @@ const headers = {
 export const getPost = (postId) =>
   fetch(`${api}/posts/${postId}`, { headers })
     .then(res => res.json())
-    .then(data => data)
+    .then(data => {
+      alert(JSON.stringify(data))
+    })
 
 export const getPostComments = (postId, sortKey) =>
   fetch(`${api}/posts/${postId}/comments`, { headers })

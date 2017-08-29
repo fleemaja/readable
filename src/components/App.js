@@ -53,7 +53,7 @@ class App extends Component {
               )}
             />
 
-          <Route path="/:category/:postId" component={ShowPost} />
+          <Route exact path="/:category/:postId" component={ShowPost} />
         </Switch>
       </BrowserRouter>
     );
