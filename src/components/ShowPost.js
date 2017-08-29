@@ -15,8 +15,9 @@ class ShowPost extends Component {
 
   componentWillMount = () => {
     const postId = this.props.match.params.postId;
+    const sortKey = this.state.sortKey;
     this.props.getPosts();
-    this.props.getPostComments(postId);
+    this.props.getPostComments(postId, sortKey);
   }
 
   componentWillReceiveProps = (newVal) => {
@@ -34,19 +35,13 @@ class ShowPost extends Component {
 
   handleSortChange = (e) => {
     const sortKey = e.target.value;
+    this.setState({ sortKey });
     this.sortComments(sortKey);
   }
 
   sortComments(sortKey) {
-    this.setState({ sortKey });
-    const comments = this.state.comments.sort(this.sortByKey(sortKey).bind(this));
-    this.setState({ comments });
-  }
-
-  sortByKey(sortKey) {
-    return function(a, b) {
-      return a[sortKey] < b[sortKey];
-    }
+    const postId = this.props.match.params.postId;
+    this.props.getPostComments(postId, sortKey);
   }
 
   render() {
@@ -91,7 +86,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps(dispatch) {
   return {
     getPosts: () => dispatch(fetchPosts()),
-    getPostComments: (id) => dispatch(fetchPostComments(id))
+    getPostComments: (id, sortKey) => dispatch(fetchPostComments(id, sortKey))
   }
 }
 

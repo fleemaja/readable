@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import { apiAddComment } from '../actions';
 import { connect } from 'react-redux';
 
+const initialState = {
+  author: '',
+  body: ''
+}
+
 class AddCommentForm extends Component {
-  state = {
-    author: '',
-    body: ''
-  }
+  
+  state = initialState
 
   handleSubmit(e) {
     e.preventDefault();
@@ -16,6 +19,8 @@ class AddCommentForm extends Component {
     const parentId = this.props.parentId;
 
     this.props.addComment(parentId, body, author);
+
+    this.setState(initialState);
   }
 
   handleInput(e) {

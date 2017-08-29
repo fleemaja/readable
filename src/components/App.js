@@ -16,19 +16,11 @@ class App extends Component {
   }
 
   sortPosts(sortKey) {
-    this.setState({ sortKey });
-    const posts = this.state.posts.sort(this.sortByKey(sortKey).bind(this));
-    this.setState({ posts });
-  }
-
-  sortByKey(sortKey) {
-    return function(a, b) {
-      return a[sortKey] < b[sortKey];
-    }
+    this.props.getPosts(sortKey);
   }
 
   componentWillMount = () => {
-    this.props.getPosts();
+    this.props.getPosts(this.state.sortKey);
     const width = window.innerWidth;
     if (width < 768) {
       this.setState({ slideClass: 'slide-out' });
@@ -76,7 +68,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPosts: () => dispatch(fetchPosts())
+    getPosts: (sortKey) => dispatch(fetchPosts(sortKey))
   }
 }
 

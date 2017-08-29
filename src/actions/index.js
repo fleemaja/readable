@@ -135,15 +135,15 @@ export const apiCommentDelete = (id) => dispatch => (
              .then(dispatch(commentDelete(id)))
 );
 
-export const fetchPostComments = (id) => dispatch => (
+export const fetchPostComments = (id, sortKey) => dispatch => (
   ReadableAPI
-      .getPostComments(id)
+      .getPostComments(id, sortKey)
       .then(comments => dispatch(receivePostComments(comments)))
 );
 
-export const fetchPosts = () => dispatch => (
+export const fetchPosts = (sortKey) => dispatch => (
   ReadableAPI
-      .getAllPosts()
+      .getAllPosts(sortKey)
       .then(posts => dispatch(receivePosts(posts)))
 );
 
