@@ -11,7 +11,10 @@ import {
   DELETE_POST,
   DELETE_COMMENT,
   EDIT_POST,
-  EDIT_COMMENT
+  EDIT_COMMENT,
+  CHANGE_COMMENT_FORM,
+  CHANGE_POST_FORM,
+  TOGGLE_MODAL
 } from '../actions'
 
 function posts(state = [], action) {
@@ -89,8 +92,47 @@ function categories(state = [], action) {
   }
 }
 
+function comment(state = { author: '', body: '' }, action) {
+  switch (action.type) {
+    case CHANGE_COMMENT_FORM :
+      return {
+        ...action.comment
+      }
+    default :
+      return state
+  }
+}
+
+const initialPostState = {
+  author: '', body: '',
+  title: '', category: ''
+}
+
+function post(state = initialPostState, action) {
+  switch (action.type) {
+    case CHANGE_POST_FORM :
+      return {
+        ...action.post
+      }
+    default :
+      return state
+  }
+}
+
+function modalIsOpen(state = false, action) {
+  switch (action.type) {
+    case TOGGLE_MODAL :
+      return !state
+    default :
+      return state
+  }
+}
+
 export default combineReducers({
   posts,
   comments,
-  categories
+  categories,
+  comment,
+  post,
+  modalIsOpen
 })

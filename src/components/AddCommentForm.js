@@ -1,39 +1,29 @@
 import React, { Component } from 'react';
-import { apiAddComment } from '../actions';
+import { apiAddComment, changeCommentForm } from '../actions';
 import { connect } from 'react-redux';
 
-const initialState = {
-  author: '',
-  body: ''
-}
-
 class AddCommentForm extends Component {
-  
-  state = initialState
 
   handleSubmit(e) {
     e.preventDefault();
 
-    const author = this.state.author;
-    const body = this.state.body;
+    const comment = this.props.comment;
     const parentId = this.props.parentId;
-
-    this.props.addComment(parentId, body, author);
-
-    this.setState(initialState);
+    this.props.addComment(parentId, comment);
   }
 
   handleInput(e) {
     const newVal = e.target.value;
     const property = e.target.name;
 
-    let stateObj = Object.assign({}, this.state);
-    stateObj[property] = newVal;
+    let comment = Object.assign({}, this.props.comment);
+    comment[property] = newVal;
 
-    this.setState(stateObj);
+    this.props.changeComment(comment);
   }
 
   render() {
+    const comment = this.props.comment;
     return (
       <div className="add-comment-form">
         <h3>Add Comment</h3>
@@ -41,12 +31,12 @@ class AddCommentForm extends Component {
           <label for="add-author">
             <p>Author</p>
             <input type="text" placeholder="comment author" name="author" id="add-author"
-                   value={this.state.author} onChange={this.handleInput.bind(this)} />
+                   value={comment.author} onChange={this.handleInput.bind(this)} />
           </label>
           <label for="add-body">
             <p>Body</p>
-            <input type="text" placeholder="add comment" name="body"
-                   value={this.state.body} onChange={this.handleInput.bind(this)} />
+            <input type="text" placeholder="add comment" name="body" id="add-body"
+                   value={comment.body} onChange={this.handleInput.bind(this)} />
           </label>
           <input type="submit" />
         </form>
@@ -57,14 +47,16 @@ class AddCommentForm extends Component {
 
 function mapStateToProps (state) {
   return {
-    comments: state.comments
+    comments: state.comments,
+    comment: state.comment
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    addComment: (parentId, body, author) =>
-      dispatch(apiAddComment(parentId, body, author))
+    addComment: (parentId, comment) =>
+      dispatch(apiAddComment(parentId, comment)),
+    changeComment: (comment) => dispatch(changeCommentForm(comment))
   }
 }
 

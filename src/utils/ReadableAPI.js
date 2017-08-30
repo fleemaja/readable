@@ -58,7 +58,7 @@ export const editComment = (commentId, author, body) =>
   }).then(res => res.json())
     .then(data => data)
 
-export const addComment = (parentId, body, author) =>
+export const addComment = (parentId, comment) =>
   fetch(`${api}/comments`, {
     method: 'POST',
     headers: {
@@ -66,14 +66,16 @@ export const addComment = (parentId, body, author) =>
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      parentId, body, author,
+      parentId,
+      body: comment.body,
+      author: comment.author,
       timestamp: Date.now(),
       id: uuidv1()
     })
   }).then(res => res.json())
     .then(data => data)
 
-export const addPost = (author, body, title, category) =>
+export const addPost = (post) =>
   fetch(`${api}/posts`, {
     method: 'POST',
     headers: {
@@ -81,7 +83,8 @@ export const addPost = (author, body, title, category) =>
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      author, body, title, category,
+      author: post.author, body: post.body,
+      title: post.title, category: post.category,
       timestamp: Date.now(),
       id: uuidv1()
     })

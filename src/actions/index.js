@@ -16,6 +16,10 @@ export const ADD_COMMENT = "ADD_COMMENT";
 export const EDIT_POST = "EDIT_POST";
 export const EDIT_COMMENT = "EDIT_COMMENT";
 
+export const CHANGE_COMMENT_FORM = "CHANGE_COMMENT_FORM";
+export const CHANGE_POST_FORM = "CHANGE_POST_FORM";
+export const TOGGLE_MODAL = "TOGGLE_MODAL";
+
 export const receivePosts = posts => ({
   type: RECEIVE_POSTS,
   posts
@@ -89,16 +93,34 @@ export function editComment(comment) {
   }
 };
 
-export const apiAddPost = (author, body, title, category) => dispatch => (
+// actions that do not interact with the api
+export function changeCommentForm(comment) {
+  return {
+    type: CHANGE_COMMENT_FORM,
+    comment
+  }
+};
+
+export function changePostForm(post) {
+  return {
+    type: CHANGE_POST_FORM,
+    post
+  }
+};
+
+export function toggleModal() { return { type: TOGGLE_MODAL } };
+
+// actions that interact with the api
+export const apiAddPost = (post) => dispatch => (
   ReadableAPI
-      .addPost(author, body, title, category)
-      .then(post => dispatch(addPost(post)))
+      .addPost(post)
+      .then(p => dispatch(addPost(p)))
 );
 
-export const apiAddComment = (parentId, body, author) => dispatch => (
+export const apiAddComment = (parentId, comment) => dispatch => (
   ReadableAPI
-      .addComment(parentId, body, author)
-      .then(comment => dispatch(addComment(comment)))
+      .addComment(parentId, comment)
+      .then(c => dispatch(addComment(c)))
 );
 
 export const apiEditPost = (postId, author, body, title, category) => dispatch => (
