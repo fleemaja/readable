@@ -12,9 +12,13 @@ import {
   DELETE_COMMENT,
   EDIT_POST,
   EDIT_COMMENT,
-  CHANGE_COMMENT_FORM,
-  CHANGE_POST_FORM,
-  TOGGLE_MODAL
+  CHANGE_ADD_COMMENT_FORM,
+  CHANGE_ADD_POST_FORM,
+  CHANGE_EDIT_COMMENT_FORM,
+  CHANGE_EDIT_POST_FORM,
+  TOGGLE_ADD_POST_MODAL,
+  TOGGLE_EDIT_POST_MODAL,
+  TOGGLE_EDIT_COMMENT_MODAL
 } from '../actions'
 
 function posts(state = [], action) {
@@ -92,9 +96,20 @@ function categories(state = [], action) {
   }
 }
 
-function comment(state = { author: '', body: '' }, action) {
+function commentToAdd(state = { author: '', body: '' }, action) {
   switch (action.type) {
-    case CHANGE_COMMENT_FORM :
+    case CHANGE_ADD_COMMENT_FORM :
+      return {
+        ...action.comment
+      }
+    default :
+      return state
+  }
+}
+
+function commentToEdit(state = { id: '', author: '', body: '' }, action) {
+  switch (action.type) {
+    case CHANGE_EDIT_COMMENT_FORM :
       return {
         ...action.comment
       }
@@ -108,9 +123,9 @@ const initialPostState = {
   title: '', category: ''
 }
 
-function post(state = initialPostState, action) {
+function postToAdd(state = initialPostState, action) {
   switch (action.type) {
-    case CHANGE_POST_FORM :
+    case CHANGE_ADD_POST_FORM :
       return {
         ...action.post
       }
@@ -119,9 +134,38 @@ function post(state = initialPostState, action) {
   }
 }
 
-function modalIsOpen(state = false, action) {
+function postToEdit(state = initialPostState, action) {
   switch (action.type) {
-    case TOGGLE_MODAL :
+    case CHANGE_EDIT_POST_FORM :
+      return {
+        ...action.post
+      }
+    default :
+      return state
+  }
+}
+
+function editCommentModalIsOpen(state = false, action) {
+  switch (action.type) {
+    case TOGGLE_EDIT_COMMENT_MODAL :
+      return !state
+    default :
+      return state
+  }
+}
+
+function addPostModalIsOpen(state = false, action) {
+  switch (action.type) {
+    case TOGGLE_ADD_POST_MODAL :
+      return !state
+    default :
+      return state
+  }
+}
+
+function editPostModalIsOpen(state = false, action) {
+  switch (action.type) {
+    case TOGGLE_EDIT_POST_MODAL :
       return !state
     default :
       return state
@@ -132,7 +176,11 @@ export default combineReducers({
   posts,
   comments,
   categories,
-  comment,
-  post,
-  modalIsOpen
+  commentToAdd,
+  commentToEdit,
+  postToAdd,
+  postToEdit,
+  editCommentModalIsOpen,
+  addPostModalIsOpen,
+  editPostModalIsOpen
 })

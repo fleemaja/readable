@@ -44,36 +44,32 @@ class Post extends Component {
   render() {
     const post = this.state.post;
     const timeAgo = moment(`${post.timestamp}`, "x").fromNow();
-    if (Object.keys(post).length === 0 && post.constructor === Object) {
-      return (<div>Loading...</div>)
-    } else {
-      return (
-          <div className="Post">
-            <div className="vote-component">
-              <FaCaretUp className="voteButton" onClick={this.vote.bind(this, "upVote")} />
-              <strong>{post.voteScore}</strong>
-              <FaCaretDown className="voteButton" onClick={this.vote.bind(this, "downVote")} />
-            </div>
-            <div className="post-info">
-              <Link to={`/${post.category}/${post.id}`} className="title-link">{ post.title }</Link>
-              <p>
-                { `submitted ${timeAgo} from ${post.author} to ` }
-                <Link className="category-link" to={`/${post.category}`}>{ post.category }</Link>
-              </p>
-              <div className="modify-buttons">
-                <FaClose className="delete-button" onClick={this.deletePost.bind(this)} />
-                <EditPostForm post={post} />
-                <span>{ `${this.state.numberOfComments} comments`}</span>
-              </div>
-            </div>
-            { this.props.detail &&
-              <div className="post-body">
-                { post.body }
-              </div>
-            }
+    return (
+      <div className={`Post ${this.props.detail ? "detail" : ""}`}>
+        <div className="vote-component">
+          <FaCaretUp className="voteButton" onClick={this.vote.bind(this, "upVote")} />
+          <strong>{post.voteScore}</strong>
+          <FaCaretDown className="voteButton" onClick={this.vote.bind(this, "downVote")} />
+        </div>
+        <div className="post-info">
+          <Link to={`/${post.category}/${post.id}`} className="title-link">{ post.title }</Link>
+          <p>
+            { `submitted ${timeAgo} from ${post.author} to ` }
+            <Link className="category-link" to={`/${post.category}`}>{ post.category }</Link>
+          </p>
+          <div className="modify-buttons">
+            <FaClose className="delete-button" onClick={this.deletePost.bind(this)} />
+            <EditPostForm post={post} />
+            <span>{ `${this.state.numberOfComments} comments`}</span>
           </div>
-        )
-    }
+        </div>
+        { this.props.detail &&
+          <div className="post-body">
+            { post.body }
+          </div>
+        }
+      </div>
+    )
   }
 }
 

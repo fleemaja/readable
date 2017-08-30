@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import { apiEditComment } from '../actions';
+import { apiEditComment, toggleEditCommentModal, changeEditCommentForm } from '../actions';
 import { connect } from 'react-redux';
 import { FaEdit, FaClose } from 'react-icons/lib/fa';
 
@@ -26,76 +26,67 @@ const customStyles = {
 class EditCommentForm extends Component {
   constructor() {
     super();
-
-    this.state = {
-      modalIsOpen: false,
-      author: '',
-      body: ''
-    };
-
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-  }
-
-  componentWillMount() {
-    const comment = this.props.comment;
-    this.setState({ author: comment.author, body: comment.body })
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   handleSubmit(e) {
     e.preventDefault();
 
-    const author = this.state.author;
-    const body = this.state.body;
-    const commentId = this.props.comment.id;
+    const comment = this.props.commentToEdit;
 
-    this.props.editComment(commentId, author, body)
-              .then(this.closeModal());
+    this.props.editComment(comment)
+              .then(this.toggleModal());
   }
 
   handleInput(e) {
     const newVal = e.target.value;
     const property = e.target.name;
 
-    let stateObj = Object.assign({}, this.state);
-    stateObj[property] = newVal;
+    let comment = Object.assign({}, this.props.commentToEdit);
+    comment[property] = newVal;
 
-    this.setState(stateObj);
+    this.props.changeCommentToEdit(comment);
   }
 
-  openModal() {
-    this.setState({ modalIsOpen: true });
-  }
+  toggleModal() {
+    // if modal is being opened change state of comment to edit
+    if (!this.props.modalIsOpen) {
+      const comment = this.props.comment;
+      const c = { commentId: comment.id,
+                  body: comment.body,
+                  author: comment.author }
+      this.props.changeCommentToEdit(c);
+    }
 
-  closeModal() {
-    this.setState({ modalIsOpen: false });
+    this.props.toggleModal();
   }
 
   render() {
+    const comment = this.props.commentToEdit;
     return (
       <div className="modal">
-        <FaEdit className="edit-button" onClick={this.openModal} />
+        <FaEdit className="edit-button" onClick={this.toggleModal} />
         <Modal
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
+          isOpen={this.props.modalIsOpen}
+          onRequestClose={this.toggleModal}
           style={customStyles}
-          contentLabel="Example Modal"
+          contentLabel="Edit Comment"
         >
           <div>
-            <h2 className="modal-title" ref={subtitle => this.subtitle = subtitle}>Edit Comment</h2>
-            <FaClose className="modal-close" onClick={this.closeModal} />
+            <h2 className="modal-title">Edit Comment</h2>
+            <FaClose className="modal-close" onClick={this.toggleModal} />
           </div>
           <form onSubmit={this.handleSubmit.bind(this)}>
             <label for="author">
               <p>Author</p>
               <input type="text" placeholder="comment author" id="author"
-                     name="author" value={this.state.author}
+                     name="author" value={comment.author}
                      onChange={this.handleInput.bind(this)} />
             </label>
             <label for="body">
               <p>Body</p>
               <textarea placeholder="comment body" name="body" id="body"
-                        value={this.state.body}
+                        value={comment.body}
                         onChange={this.handleInput.bind(this)} />
             </label>
             <input type="submit" />
@@ -108,14 +99,18 @@ class EditCommentForm extends Component {
 
 function mapStateToProps (state) {
   return {
-    comments: state.comments
+    comments: state.comments,
+    commentToEdit: state.commentToEdit,
+    modalIsOpen: state.editCommentModalIsOpen
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    editComment: (commentId, body, author) =>
-      dispatch(apiEditComment(commentId, body, author))
+    editComment: (comment) =>
+      dispatch(apiEditComment(comment)),
+    toggleModal: () => dispatch(toggleEditCommentModal()),
+    changeCommentToEdit: (comment) => dispatch(changeEditCommentForm(comment))
   }
 }
 

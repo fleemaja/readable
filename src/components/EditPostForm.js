@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import { fetchCategories, apiEditPost } from '../actions';
+import { apiEditPost, toggleEditPostModal, changeEditPostForm  } from '../actions';
 import { connect } from 'react-redux';
 import { FaEdit, FaClose } from 'react-icons/lib/fa';
 
@@ -27,102 +27,83 @@ class EditPostForm extends Component {
   constructor() {
     super();
 
-    this.state = {
-      modalIsOpen: false,
-      categories: [],
-      author: '',
-      body: '',
-      title: '',
-      category: ''
-    };
-
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-  }
-
-  componentWillMount() {
-    const post = this.props.post;
-    this.setState({ author: post.author, body: post.body, title: post.title, category: post.category })
-    this.props.getCategories();
-  }
-
-  componentWillReceiveProps = (newVal) => {
-    const categories = newVal.categories;
-    this.setState({ categories });
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   handleSubmit(e) {
     e.preventDefault();
 
-    const author = this.state.author;
-    const body = this.state.body;
-    const title = this.state.title;
-    const category = this.state.category;
-    const postId = this.props.post.id;
+    const post = this.props.postToEdit;
 
-    this.props.editPost(postId, author, body, title, category)
-              .then(this.closeModal());
+    this.props.editPost(post)
+              .then(this.toggleModal());
   }
 
   handleInput(e) {
     const newVal = e.target.value;
     const property = e.target.name;
 
-    let stateObj = Object.assign({}, this.state);
-    stateObj[property] = newVal;
+    let post = Object.assign({}, this.props.postToEdit);
+    post[property] = newVal;
 
-    this.setState(stateObj);
+    this.props.changePostToEdit(post);
   }
 
-  openModal() {
-    this.setState({ modalIsOpen: true });
-  }
+  toggleModal() {
+    // if modal is being opened change state of post to edit
+    if (!this.props.modalIsOpen) {
+      const post = this.props.post;
+      const p = { postId: post.id, body: post.body,
+                  author: post.author, title: post.title,
+                  category: post.category }
+      this.props.changePostToEdit(p);
+    }
 
-  closeModal() {
-    this.setState({modalIsOpen: false});
+    this.props.toggleModal();
   }
 
   render() {
+    const post = this.props.postToEdit;
     return (
       <div className="modal">
-        <FaEdit className="edit-button" onClick={this.openModal} />
+        <FaEdit className="edit-button" onClick={this.toggleModal} />
         <Modal
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
+          isOpen={this.props.modalIsOpen}
+          onRequestClose={this.toggleModal}
           style={customStyles}
-          contentLabel="Example Modal"
+          contentLabel="Edit Post"
         >
 
           <div>
-            <h2 className="modal-title" ref={subtitle => this.subtitle = subtitle}>Edit Post</h2>
-            <FaClose className="modal-close" onClick={this.closeModal} />
+            <h2 className="modal-title">Edit Post</h2>
+            <FaClose className="modal-close" onClick={this.toggleModal} />
           </div>
           <form onSubmit={this.handleSubmit.bind(this)}>
             <label for="author">
               <p>Author</p>
               <input type="text" placeholder="post author" id="author"
-                     name="author" value={this.state.author}
+                     name="author" value={post.author}
                      onChange={this.handleInput.bind(this)} />
             </label>
             <label for="title">
               <p>Title</p>
               <input type="text" placeholder="post title" id="title"
-                     name="title" value={this.state.title}
+                     name="title" value={post.title}
                      onChange={this.handleInput.bind(this)} />
             </label>
             <label for="body">
               <p>Body</p>
               <textarea placeholder="post body" name="body" id="body"
-                        value={this.state.body}
+                        value={post.body}
                         onChange={this.handleInput.bind(this)} />
             </label>
             <label for="category">
               <p>Category</p>
               <select name="category" id="category"
-                      value={this.state.category}
+                      value={post.category}
                       onChange={this.handleInput.bind(this)} >
                 {
-                  this.state.categories.map((c) =>
+                  this.props.categories.map((c) =>
                     <option value={c.name}>{c.name}</option>
                   )
                 }
@@ -138,15 +119,17 @@ class EditPostForm extends Component {
 
 function mapStateToProps (state) {
   return {
-    categories: state.categories
+    postToEdit: state.postToEdit,
+    categories: state.categories,
+    modalIsOpen: state.editPostModalIsOpen
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    editPost: (postId, author, body, title, category) =>
-      dispatch(apiEditPost(postId, author, body, title, category)),
-    getCategories: () => dispatch(fetchCategories())
+    editPost: (post) => dispatch(apiEditPost(post)),
+    toggleModal: () => dispatch(toggleEditPostModal()),
+    changePostToEdit: (post) => dispatch(changeEditPostForm(post))
   }
 }
 

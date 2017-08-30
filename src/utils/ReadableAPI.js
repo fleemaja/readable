@@ -17,9 +17,7 @@ const headers = {
 export const getPost = (postId) =>
   fetch(`${api}/posts/${postId}`, { headers })
     .then(res => res.json())
-    .then(data => {
-      alert(JSON.stringify(data))
-    })
+    .then(data => data)
 
 export const getPostComments = (postId, sortKey) =>
   fetch(`${api}/posts/${postId}/comments`, { headers })
@@ -36,25 +34,28 @@ export const getAllCategories = () =>
     .then(res => res.json())
     .then(data => data.categories)
 
-export const editPost = (postId, author, body, title, category) =>
-  fetch(`${api}/posts/${postId}`, {
+export const editPost = (post) =>
+  fetch(`${api}/posts/${post.postId}`, {
     method: 'PUT',
     headers: {
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ author, body, title, category })
+    body: JSON.stringify({ author: post.author, body: post.body,
+                           title: post.title, category: post.category })
   }).then(res => res.json())
     .then(data => data)
 
-export const editComment = (commentId, author, body) =>
-  fetch(`${api}/comments/${commentId}`, {
+export const editComment = (comment) =>
+  fetch(`${api}/comments/${comment.commentId}`, {
     method: 'PUT',
     headers: {
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ author, body })
+    body: JSON.stringify({
+      id: comment.commentId, author: comment.author, body: comment.body
+    })
   }).then(res => res.json())
     .then(data => data)
 

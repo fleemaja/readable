@@ -16,9 +16,14 @@ export const ADD_COMMENT = "ADD_COMMENT";
 export const EDIT_POST = "EDIT_POST";
 export const EDIT_COMMENT = "EDIT_COMMENT";
 
-export const CHANGE_COMMENT_FORM = "CHANGE_COMMENT_FORM";
-export const CHANGE_POST_FORM = "CHANGE_POST_FORM";
-export const TOGGLE_MODAL = "TOGGLE_MODAL";
+export const CHANGE_ADD_COMMENT_FORM = "CHANGE_ADD_COMMENT_FORM";
+export const CHANGE_EDIT_COMMENT_FORM = "CHANGE_EDIT_COMMENT_FORM";
+export const CHANGE_ADD_POST_FORM = "CHANGE_ADD_POST_FORM";
+export const CHANGE_EDIT_POST_FORM = "CHANGE_EDIT_POST_FORM";
+
+export const TOGGLE_EDIT_COMMENT_MODAL = "TOGGLE_EDIT_COMMENT_MODAL";
+export const TOGGLE_EDIT_POST_MODAL = "TOGGLE_EDIT_POST_MODAL";
+export const TOGGLE_ADD_POST_MODAL = "TOGGLE_ADD_POST_MODAL";
 
 export const receivePosts = posts => ({
   type: RECEIVE_POSTS,
@@ -94,21 +99,37 @@ export function editComment(comment) {
 };
 
 // actions that do not interact with the api
-export function changeCommentForm(comment) {
+export function changeAddCommentForm(comment) {
   return {
-    type: CHANGE_COMMENT_FORM,
+    type: CHANGE_ADD_COMMENT_FORM,
     comment
   }
 };
 
-export function changePostForm(post) {
+export function changeAddPostForm(post) {
   return {
-    type: CHANGE_POST_FORM,
+    type: CHANGE_ADD_POST_FORM,
     post
   }
 };
 
-export function toggleModal() { return { type: TOGGLE_MODAL } };
+export function changeEditCommentForm(comment) {
+  return {
+    type: CHANGE_EDIT_COMMENT_FORM,
+    comment
+  }
+};
+
+export function changeEditPostForm(post) {
+  return {
+    type: CHANGE_EDIT_POST_FORM,
+    post
+  }
+};
+
+export function toggleAddPostModal() { return { type: TOGGLE_ADD_POST_MODAL } };
+export function toggleEditPostModal() { return { type: TOGGLE_EDIT_POST_MODAL } };
+export function toggleEditCommentModal() { return { type: TOGGLE_EDIT_COMMENT_MODAL } };
 
 // actions that interact with the api
 export const apiAddPost = (post) => dispatch => (
@@ -123,16 +144,16 @@ export const apiAddComment = (parentId, comment) => dispatch => (
       .then(c => dispatch(addComment(c)))
 );
 
-export const apiEditPost = (postId, author, body, title, category) => dispatch => (
+export const apiEditPost = (post) => dispatch => (
   ReadableAPI
-      .editPost(postId, author, body, title, category)
+      .editPost(post)
       .then(post => dispatch(editPost(post)))
 );
 
-export const apiEditComment = (commentId, body, author) => dispatch => (
+export const apiEditComment = (commentId, comment) => dispatch => (
   ReadableAPI
-      .editComment(commentId, body, author)
-      .then(comment => dispatch(editComment(comment)))
+      .editComment(commentId, comment)
+      .then(c => dispatch(editComment(c)))
 );
 
 export const apiPostVote = (id, vote) => dispatch => (

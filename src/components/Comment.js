@@ -36,29 +36,25 @@ class Comment extends Component {
   render() {
     const comment = this.state.comment;
     const timeAgo = moment(`${comment.timestamp}`, "x").fromNow();
-    if (Object.keys(comment).length === 0 && comment.constructor === Object) {
-      return (<div>Loading...</div>)
-    } else {
-      return (
-          <div className="Comment">
-            <div className="vote-component">
-              <FaCaretUp className="voteButton" onClick={this.vote.bind(this, "upVote")} />
-              <strong>{comment.voteScore}</strong>
-              <FaCaretDown className="voteButton" onClick={this.vote.bind(this, "downVote")} />
-            </div>
-            <div className="comment-info">
-              <p className="comment-body">{ comment.body }</p>
-              <p>
-                { `submitted ${timeAgo} from ${comment.author}` }
-              </p>
-              <div className="modify-buttons">
-                <FaClose className="delete-button" onClick={this.deleteComment.bind(this)} />
-                <EditCommentForm comment={comment} editComment={this.editComment.bind(this)} />
-              </div>
-            </div>
+    return (
+      <div className="Comment">
+        <div className="vote-component">
+          <FaCaretUp className="voteButton" onClick={this.vote.bind(this, "upVote")} />
+          <strong>{comment.voteScore}</strong>
+          <FaCaretDown className="voteButton" onClick={this.vote.bind(this, "downVote")} />
+        </div>
+        <div className="comment-info">
+          <p className="comment-body">{ comment.body }</p>
+          <p>
+            { `submitted ${timeAgo} from ${comment.author}` }
+          </p>
+          <div className="modify-buttons">
+            <FaClose className="delete-button" onClick={this.deleteComment.bind(this)} />
+            <EditCommentForm comment={comment} editComment={this.editComment.bind(this)} />
           </div>
-        )
-    }
+        </div>
+      </div>
+    )
   }
 }
 

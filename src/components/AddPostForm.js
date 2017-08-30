@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import { apiAddPost, toggleModal, changePostForm } from '../actions';
+import { apiAddPost, toggleAddPostModal, changeAddPostForm } from '../actions';
 import { connect } from 'react-redux';
 import { FaClose } from 'react-icons/lib/fa';
 
@@ -32,7 +32,7 @@ class AddPostForm extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    const post = this.props.post;
+    const post = this.props.postToAdd;
     this.props.addPost(post).then(this.toggleModal());
   }
 
@@ -40,10 +40,10 @@ class AddPostForm extends Component {
     const newVal = e.target.value;
     const property = e.target.name;
 
-    let post = Object.assign({}, this.props.post);
+    let post = Object.assign({}, this.props.postToAdd);
     post[property] = newVal;
 
-    this.props.changePost(post);
+    this.props.changePostToAdd(post);
   }
 
   toggleModal() {
@@ -51,7 +51,7 @@ class AddPostForm extends Component {
   }
 
   render() {
-    const post = this.props.post;
+    const post = this.props.postToAdd;
     return (
       <div className="modal add-modal">
         <button className="add" onClick={this.toggleModal}>+ Add Post</button>
@@ -107,16 +107,16 @@ class AddPostForm extends Component {
 function mapStateToProps (state) {
   return {
     categories: state.categories,
-    modalIsOpen: state.modalIsOpen,
-    post: state.post
+    modalIsOpen: state.addPostModalIsOpen,
+    postToAdd: state.postToAdd
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     addPost: (post) => dispatch(apiAddPost(post)),
-    toggleModal: () => dispatch(toggleModal()),
-    changePost: (post) => dispatch(changePostForm(post))
+    toggleModal: () => dispatch(toggleAddPostModal()),
+    changePostToAdd: (post) => dispatch(changeAddPostForm(post))
   }
 }
 
