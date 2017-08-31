@@ -1,5 +1,6 @@
 import * as ReadableAPI from '../utils/ReadableAPI';
 
+// action type constants (constant misspellings are easier to catch as bugs than string misspellings)
 export const RECEIVE_POSTS = "RECEIVE_POSTS";
 export const RECEIVE_CATEGORIES = "RECEIVE_CATEGORIES";
 export const RECEIVE_POST_COMMENTS = "RECEIVE_POST_COMMENTS";
@@ -34,6 +35,7 @@ export const SET_FILTER_VISIBILITY = "SET_FILTER_VISIBILITY";
 
 export const UPDATE_POST_COMMENTS_NUM_MAP = "UPDATE_POST_COMMENTS_NUM_MAP";
 
+// actions
 export const receivePosts = posts => ({
   type: RECEIVE_POSTS,
   posts
@@ -112,7 +114,6 @@ export function editComment(comment) {
   }
 };
 
-// actions that do not interact with the api
 export function changeAddCommentForm(comment) {
   return {
     type: CHANGE_ADD_COMMENT_FORM,
