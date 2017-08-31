@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import EditPostForm from './EditPostForm';
-import { apiPostVote, apiPostDelete, fetchPost,
+import { apiPostVote, apiPostDelete, 
          getPostCommentsNum, updatePostCommentsNumMap } from '../actions';
 import { connect } from 'react-redux';
 import { FaCaretUp, FaCaretDown, FaClose } from 'react-icons/lib/fa';
