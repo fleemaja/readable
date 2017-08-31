@@ -4,6 +4,7 @@ import {
   RECEIVE_POSTS,
   RECEIVE_POST_COMMENTS,
   RECEIVE_CATEGORIES,
+  RECEIVE_POST,
   ADD_POST,
   ADD_COMMENT,
   POST_VOTE,
@@ -18,7 +19,11 @@ import {
   CHANGE_EDIT_POST_FORM,
   TOGGLE_ADD_POST_MODAL,
   TOGGLE_EDIT_POST_MODAL,
-  TOGGLE_EDIT_COMMENT_MODAL
+  TOGGLE_EDIT_COMMENT_MODAL,
+  CHANGE_POST_SORT_KEY,
+  CHANGE_COMMENT_SORT_KEY,
+  SET_FILTER_VISIBILITY,
+  UPDATE_POST_COMMENTS_NUM_MAP
 } from '../actions'
 
 function posts(state = [], action) {
@@ -80,6 +85,17 @@ function comments(state = [], action) {
       )
     case DELETE_COMMENT :
       return state.filter(comment => (comment.id !== action.id))
+    default :
+      return state
+  }
+}
+
+function post(state = {}, action) {
+  switch (action.type) {
+    case RECEIVE_POST :
+      return {
+        ...action.post
+      }
     default :
       return state
   }
@@ -172,15 +188,59 @@ function editPostModalIsOpen(state = false, action) {
   }
 }
 
+function postSortKey(state = 'voteScore', action) {
+  switch (action.type) {
+    case CHANGE_POST_SORT_KEY :
+      return action.key
+    default :
+      return state
+  }
+}
+
+function commentSortKey(state = 'voteScore', action) {
+  switch (action.type) {
+    case CHANGE_COMMENT_SORT_KEY :
+      return action.key
+    default :
+      return state
+  }
+}
+
+function filtersSlideClass(state = 'slide-in', action) {
+  switch (action.type) {
+    case SET_FILTER_VISIBILITY :
+      return action.visibility
+    default :
+      return state
+  }
+}
+
+function postCommentsNumMap(state = {}, action) {
+  switch (action.type) {
+    case UPDATE_POST_COMMENTS_NUM_MAP :
+      return {
+        ...state,
+        [action.postId]: action.numberOfComments
+      }
+    default :
+      return state
+  }
+}
+
 export default combineReducers({
   posts,
   comments,
   categories,
+  post,
+  postSortKey,
+  commentSortKey,
   commentToAdd,
   commentToEdit,
   postToAdd,
   postToEdit,
   editCommentModalIsOpen,
   addPostModalIsOpen,
-  editPostModalIsOpen
+  editPostModalIsOpen,
+  filtersSlideClass,
+  postCommentsNumMap
 })

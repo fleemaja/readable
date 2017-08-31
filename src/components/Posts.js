@@ -1,32 +1,18 @@
 import React, { Component } from 'react';
 import Post from './Post';
+import { connect } from 'react-redux';
 
 class Posts extends Component {
-  state = {
-    posts: [],
-    category: ''
-  }
-
-  componentWillMount() {
-    this.setState({ posts: this.props.posts });
-  }
-
-  componentWillReceiveProps(newVal) {
-    const category = newVal.match.params.category || '';
-    let posts = newVal.posts;
-    this.setState({ category });
-    if (category) {
-      posts = posts.filter(p => p.category === category)
-    }
-    this.setState({ posts });
-  }
   render() {
+    const category = this.props.match.params.category || '';
     return (
       <div className="Posts">
         {
-          this.state.posts.map((p) =>
-            <Post key={p.timestamp}
-                  post={p} />
+          this.props.posts
+            .filter(p => category === '' || p.category === category)
+            .map((p) =>
+              <Post key={p.timestamp}
+                 post={p} />
           )
         }
       </div>
@@ -34,4 +20,12 @@ class Posts extends Component {
   }
 }
 
-export default Posts;
+function mapStateToProps (state) {
+  return {
+    posts: state.posts
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(Posts);

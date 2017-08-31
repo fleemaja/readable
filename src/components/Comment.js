@@ -7,21 +7,9 @@ import moment from 'moment';
 
 class Comment extends Component {
 
-  state = {
-    comment: {}
-  }
-
   deleteComment() {
-    const commentId = this.state.comment.id;
+    const commentId = this.props.comment.id;
     this.props.deleteComment(commentId);
-  }
-
-  componentWillMount() {
-    this.setState({ comment: this.props.comment });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState({ comment: nextProps.comment });
   }
 
   vote(voteType) {
@@ -29,12 +17,8 @@ class Comment extends Component {
     this.props.commentVote(commentId, voteType);
   }
 
-  editComment(editedComment) {
-    this.setState({ comment: editedComment });
-  }
-
   render() {
-    const comment = this.state.comment;
+    const comment = this.props.comment;
     const timeAgo = moment(`${comment.timestamp}`, "x").fromNow();
     return (
       <div className="Comment">
@@ -50,7 +34,7 @@ class Comment extends Component {
           </p>
           <div className="modify-buttons">
             <FaClose className="delete-button" onClick={this.deleteComment.bind(this)} />
-            <EditCommentForm comment={comment} editComment={this.editComment.bind(this)} />
+            <EditCommentForm comment={comment} />
           </div>
         </div>
       </div>

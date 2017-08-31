@@ -1,32 +1,20 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchCategories } from '../actions';
 import { connect } from 'react-redux';
+import { changePostSortKey } from '../actions';
 import AddPostForm from './AddPostForm';
 
 class Filters extends Component {
-  state = {
-    categories: [],
-    sortKey: 'voteScore'
-  }
-
-  componentWillMount = () => {
-    this.props.getCategories();
-  }
-
-  componentWillReceiveProps = (newVal) => {
-    const categories = newVal.categories;
-    this.setState({ categories });
-  }
 
   handleSortChange = (e) => {
     const sortKey = e.target.value;
-    this.setState({ sortKey });
+    this.props.changePostSortKey(sortKey);
     this.props.sortPosts(sortKey);
   }
 
   render() {
     const category = this.props.match.params.category;
+    const sortKey = this.props.postSortKey;
     return (
       <div className={`overlay ${this.props.slideClass}`}>
         <div className={`filters ${this.props.slideClass}`}>
@@ -38,7 +26,7 @@ class Filters extends Component {
             </label>
           </Link>
           {
-            this.state.categories.map((c) => {
+            this.props.categories.map((c) => {
               return (
                 <Link to={`/${c.name}`} key={c.name} >
                   <label for={c.name}>
@@ -52,11 +40,11 @@ class Filters extends Component {
           {
             <label for="select-sort" className="select-sort-label">
               <h3>Sort Type</h3>
-              <select value={this.state.sortKey} onChange={this.handleSortChange.bind(this)} id="select-sort" >
-                <option value="voteScore" selected={this.state.sortKey === 'voteScore'} >
+              <select value={sortKey} onChange={this.handleSortChange.bind(this)} id="select-sort" >
+                <option value="voteScore" selected={sortKey === 'voteScore'} >
                   Most Votes
                 </option>
-                <option value="timestamp" selected={this.state.sortKey === 'timestamp'}>
+                <option value="timestamp" selected={sortKey === 'timestamp'}>
                   Most Recent
                 </option>
               </select>
@@ -69,15 +57,16 @@ class Filters extends Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
-    categories: state.categories
+    categories: state.categories,
+    postSortKey: state.postSortKey
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getCategories: () => dispatch(fetchCategories())
+    changePostSortKey: (key) => dispatch(changePostSortKey(key))
   }
 }
 

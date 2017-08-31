@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { fetchPosts } from '../actions';
+import { fetchPosts, fetchCategories, setFilterVisibility } from '../actions';
 import NavBar from './NavBar';
 import Posts from './Posts';
 import ShowPost from './ShowPost';
@@ -9,33 +9,23 @@ import Filters from './Filters';
 import { BrowserRouter, Switch } from 'react-router-dom';
 
 class App extends Component {
-  state = {
-    posts: [],
-    sortKey: 'voteScore',
-    slideClass: 'slide-in'
-  }
 
   sortPosts(sortKey) {
     this.props.getPosts(sortKey);
   }
 
   componentWillMount = () => {
-    this.props.getPosts(this.state.sortKey);
+    this.props.getCategories();
+    this.props.getPosts(this.props.sortKey);
     const width = window.innerWidth;
     if (width < 768) {
-      this.setState({ slideClass: 'slide-out' });
+      this.props.setFilterVisibility('slide-out');
     }
   }
 
-  componentWillReceiveProps(newVal) {
-    const newPosts = newVal.posts;
-    const activePosts = newPosts.filter(p => p.deleted === false);
-    this.setState({ posts: activePosts });
-  }
-
   toggleFilters() {
-    const slideClass = this.state.slideClass === 'slide-in' ? 'slide-out' : 'slide-in';
-    this.setState({ slideClass });
+    const slideClass = this.props.filtersSlideClass === 'slide-in' ? 'slide-out' : 'slide-in';
+    this.props.setFilterVisibility(slideClass);
   }
 
   render() {
@@ -45,8 +35,8 @@ class App extends Component {
           <Route exact path="/:category?" render={(props) => (
                 <div className="App">
                   <NavBar toggleFilters={this.toggleFilters.bind(this)} />
-                  <Posts posts={this.state.posts} {...props} />
-                  <Filters slideClass={this.state.slideClass}
+                  <Posts {...props} />
+                  <Filters slideClass={this.props.filtersSlideClass}
                            sortPosts={this.sortPosts.bind(this)}
                            {...props} />
                 </div>
@@ -62,13 +52,16 @@ class App extends Component {
 
 function mapStateToProps (state) {
   return {
-    posts: state.posts
+    postSortKey: state.postSortKey,
+    filtersSlideClass: state.filtersSlideClass
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPosts: (sortKey) => dispatch(fetchPosts(sortKey))
+    getPosts: (sortKey) => dispatch(fetchPosts(sortKey)),
+    getCategories: () => dispatch(fetchCategories()),
+    setFilterVisibility: (visibility) => dispatch(setFilterVisibility(visibility))
   }
 }
 

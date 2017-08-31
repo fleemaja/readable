@@ -1,49 +1,36 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import EditPostForm from './EditPostForm';
-import { apiPostVote, apiPostDelete, fetchPostComments } from '../actions';
+import { apiPostVote, apiPostDelete,
+         fetchPostComments, updatePostCommentsNumMap } from '../actions';
 import { connect } from 'react-redux';
 import { FaCaretUp, FaCaretDown, FaClose } from 'react-icons/lib/fa';
 import moment from 'moment';
 
 class Post extends Component {
 
-  state = {
-    post: {},
-    numberOfComments: 0
-  }
-
   componentWillMount() {
     const post = this.props.post;
     this.props.getPostComments(post.id, 'voteScore').then(function(comments) {
       const numberOfComments = comments['comments'].length;
-      this.setState({ numberOfComments })
+      this.props.updatePostCommentsNumMap(post.id, numberOfComments);
     }.bind(this));
-    this.setState({ post });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const post = nextProps.post;
-    this.props.getPostComments(post.id, 'voteScore').then(function(comments) {
-      const numberOfComments = comments['comments'].length;
-      this.setState({ numberOfComments });
-    }.bind(this));
-    this.setState({ post });
   }
 
   deletePost() {
-    const postId = this.state.post.id;
+    const postId = this.props.post.id;
     this.props.deletePost(postId);
   }
 
   vote(voteType) {
-    const postId = this.state.post.id;
+    const postId = this.props.post.id;
     this.props.postVote(postId, voteType);
   }
 
   render() {
-    const post = this.state.post;
+    const post = this.props.post;
     const timeAgo = moment(`${post.timestamp}`, "x").fromNow();
+    const numberOfComments = this.props.postCommentsNumMap[post.id];
     return (
       <div className={`Post ${this.props.detail ? "detail" : ""}`}>
         <div className="vote-component">
@@ -60,7 +47,7 @@ class Post extends Component {
           <div className="modify-buttons">
             <FaClose className="delete-button" onClick={this.deletePost.bind(this)} />
             <EditPostForm post={post} />
-            <span>{ `${this.state.numberOfComments} comments`}</span>
+            <span>{ `${numberOfComments} comments`}</span>
           </div>
         </div>
         { this.props.detail &&
@@ -75,7 +62,8 @@ class Post extends Component {
 
 function mapStateToProps (state) {
   return {
-    posts: state.posts
+    posts: state.posts,
+    postCommentsNumMap: state.postCommentsNumMap
   }
 }
 
@@ -83,7 +71,9 @@ function mapDispatchToProps(dispatch) {
   return {
     deletePost: (id) => dispatch(apiPostDelete(id)),
     postVote: (id, vote) => dispatch(apiPostVote(id, vote)),
-    getPostComments: (id, sortKey) => dispatch(fetchPostComments(id, sortKey))
+    getPostComments: (id, sortKey) => dispatch(fetchPostComments(id, sortKey)),
+    updatePostCommentsNumMap: (id, numberOfComments) =>
+      dispatch(updatePostCommentsNumMap(id, numberOfComments))
   }
 }
 

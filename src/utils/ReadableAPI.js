@@ -27,7 +27,8 @@ export const getPostComments = (postId, sortKey) =>
 export const getAllPosts = (sortKey) =>
   fetch(`${api}/posts`, { headers })
     .then(res => res.json())
-    .then(data => data.sort(sortByKey(sortKey)))
+    .then(data => data.filter(p => p.deleted === false)
+                      .sort(sortByKey(sortKey)))
 
 export const getAllCategories = () =>
   fetch(`${api}/categories`, { headers })

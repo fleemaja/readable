@@ -3,38 +3,21 @@ import Post from './Post';
 import Comments from './Comments';
 import NavBar from './NavBar';
 import AddCommentForm from './AddCommentForm';
-import { fetchPostComments } from '../actions';
+import { fetchPostComments, fetchPost, changeCommentSortKey } from '../actions';
 import { connect } from 'react-redux';
 
 class ShowPost extends Component {
-  state = {
-    post: {},
-    comments: [],
-    sortKey: 'voteScore'
-  }
 
   componentWillMount = () => {
     const postId = this.props.match.params.postId;
-    const sortKey = this.state.sortKey;
+    const sortKey = this.props.commentsSortKey;
     this.props.getPostComments(postId, sortKey);
-  }
-
-  componentWillReceiveProps = (newVal) => {
-    const postId = this.props.match.params.postId;
-    const comments = newVal.comments;
-    const posts = this.props.posts;
-    let post = {}
-    posts.forEach(p => {
-      if (p.id === postId) {
-        post = p;
-      }
-    });
-    this.setState({ comments, post });
+    this.props.getPost(postId);
   }
 
   handleSortChange = (e) => {
     const sortKey = e.target.value;
-    this.setState({ sortKey });
+    this.props.changeCommentSortKey(sortKey);
     this.sortComments(sortKey);
   }
 
@@ -44,8 +27,9 @@ class ShowPost extends Component {
   }
 
   render() {
-    const post = this.state.post;
-    const comments = this.state.comments
+    const post = this.props.post;
+    const comments = this.props.comments;
+    const sortKey = this.props.commentsSortKey;
     return (
       <div>
         <NavBar detail={true} />
@@ -57,11 +41,11 @@ class ShowPost extends Component {
             {
               <label for="select-comments-sort" className="sort-comments-label">
                 <p>Sort By</p>
-                <select id="select-comments-sort" value={this.state.sortKey} onChange={this.handleSortChange.bind(this)} >
-                  <option value="voteScore" selected={this.state.sortKey === 'voteScore'} >
+                <select id="select-comments-sort" value={sortKey} onChange={this.handleSortChange.bind(this)} >
+                  <option value="voteScore" selected={sortKey === 'voteScore'} >
                     Most Votes
                   </option>
-                  <option value="timestamp" selected={this.state.sortKey === 'timestamp'}>
+                  <option value="timestamp" selected={sortKey === 'timestamp'}>
                     Most Recent
                   </option>
                 </select>
@@ -77,14 +61,18 @@ class ShowPost extends Component {
 
 function mapStateToProps (state) {
   return {
+    post: state.post,
     posts: state.posts,
-    comments: state.comments
+    comments: state.comments,
+    commentsSortKey: state.commentsSortKey
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPostComments: (id, sortKey) => dispatch(fetchPostComments(id, sortKey))
+    getPost: (id) => dispatch(fetchPost(id)),
+    getPostComments: (id, sortKey) => dispatch(fetchPostComments(id, sortKey)),
+    changeCommentSortKey: (key) => dispatch(changeCommentSortKey(key))
   }
 }
 

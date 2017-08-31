@@ -4,6 +4,8 @@ export const RECEIVE_POSTS = "RECEIVE_POSTS";
 export const RECEIVE_CATEGORIES = "RECEIVE_CATEGORIES";
 export const RECEIVE_POST_COMMENTS = "RECEIVE_POST_COMMENTS";
 
+export const RECEIVE_POST = "RECEIVE_POST";
+
 export const POST_VOTE = "POST_VOTE";
 export const COMMENT_VOTE = "COMMENT_VOTE";
 
@@ -25,6 +27,13 @@ export const TOGGLE_EDIT_COMMENT_MODAL = "TOGGLE_EDIT_COMMENT_MODAL";
 export const TOGGLE_EDIT_POST_MODAL = "TOGGLE_EDIT_POST_MODAL";
 export const TOGGLE_ADD_POST_MODAL = "TOGGLE_ADD_POST_MODAL";
 
+export const CHANGE_POST_SORT_KEY = "CHANGE_POST_SORT_KEY";
+export const CHANGE_COMMENT_SORT_KEY = "CHANGE_COMMENT_SORT_KEY";
+
+export const SET_FILTER_VISIBILITY = "SET_FILTER_VISIBILITY";
+
+export const UPDATE_POST_COMMENTS_NUM_MAP = "UPDATE_POST_COMMENTS_NUM_MAP";
+
 export const receivePosts = posts => ({
   type: RECEIVE_POSTS,
   posts
@@ -38,6 +47,11 @@ export const receivePostComments = comments => ({
 export const receiveCategories = categories => ({
   type: RECEIVE_CATEGORIES,
   categories
+});
+
+export const receivePost = post => ({
+  type: RECEIVE_POST,
+  post
 });
 
 export function postVote(id, voteScore) {
@@ -131,6 +145,35 @@ export function toggleAddPostModal() { return { type: TOGGLE_ADD_POST_MODAL } };
 export function toggleEditPostModal() { return { type: TOGGLE_EDIT_POST_MODAL } };
 export function toggleEditCommentModal() { return { type: TOGGLE_EDIT_COMMENT_MODAL } };
 
+export function changePostSortKey(key) {
+  return {
+    type: CHANGE_POST_SORT_KEY,
+    key
+  }
+}
+
+export function changeCommentSortKey(key) {
+  return {
+    type: CHANGE_COMMENT_SORT_KEY,
+    key
+  }
+}
+
+export function setFilterVisibility(visibility) {
+  return {
+    type: SET_FILTER_VISIBILITY,
+    visibility
+  }
+}
+
+export function updatePostCommentsNumMap(postId, numberOfComments) {
+  return {
+    type: UPDATE_POST_COMMENTS_NUM_MAP,
+    postId,
+    numberOfComments
+  }
+}
+
 // actions that interact with the api
 export const apiAddPost = (post) => dispatch => (
   ReadableAPI
@@ -194,4 +237,10 @@ export const fetchCategories = () => dispatch => (
   ReadableAPI
       .getAllCategories()
       .then(categories => dispatch(receiveCategories(categories)))
+);
+
+export const fetchPost = (id) => dispatch => (
+  ReadableAPI
+      .getPost(id)
+      .then(post => dispatch(receivePost(post)))
 );
