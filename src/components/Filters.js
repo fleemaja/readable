@@ -9,7 +9,6 @@ class Filters extends Component {
   handleSortChange = (e) => {
     const sortKey = e.target.value;
     this.props.changePostSortKey(sortKey);
-    this.props.sortPosts(sortKey);
   }
 
   render() {

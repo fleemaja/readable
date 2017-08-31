@@ -253,6 +253,17 @@ nav {
   z-index: -9999999999999;
 }
 
+.page-not-found {
+  position: absolute;
+  top: 50%;
+  bottom: 0;
+  left: calc(50% - 150px);
+  right: 0;
+  width: 300px;
+  color: #777;
+  font-size: 32px;
+}
+
 @media only screen and (max-width: 767px) {
 
   .overlay {

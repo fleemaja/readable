@@ -5,14 +5,17 @@ import { connect } from 'react-redux';
 class Posts extends Component {
   render() {
     const category = this.props.match.params.category || '';
+    const sortByKey = (sortKey) => (a, b) => a[sortKey] < b[sortKey];
     return (
       <div className="Posts">
         {
           this.props.posts
-            .filter(p => category === '' || p.category === category)
+            .filter(p => p.deleted !== true &&
+                   (category === '' ||  p.category === category))
+            .sort(sortByKey(this.props.postSortKey))
             .map((p) =>
               <Post key={p.timestamp}
-                 post={p} />
+                    postId={p.id} />
           )
         }
       </div>
@@ -22,7 +25,8 @@ class Posts extends Component {
 
 function mapStateToProps (state) {
   return {
-    posts: state.posts
+    posts: state.posts,
+    postSortKey: state.postSortKey
   }
 }
 

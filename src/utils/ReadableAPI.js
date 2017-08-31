@@ -7,8 +7,6 @@ let token = localStorage.token
 if (!token)
   token = localStorage.token = Math.random().toString(36).substr(-8)
 
-const sortByKey = (sortKey) => (a, b) => a[sortKey] < b[sortKey];
-
 const headers = {
   'Accept': 'application/json',
   'Authorization': token
@@ -19,16 +17,20 @@ export const getPost = (postId) =>
     .then(res => res.json())
     .then(data => data)
 
-export const getPostComments = (postId, sortKey) =>
+export const getPostComments = (postId) =>
   fetch(`${api}/posts/${postId}/comments`, { headers })
     .then(res => res.json())
-    .then(data => data.sort(sortByKey(sortKey)))
+    .then(data => data)
 
-export const getAllPosts = (sortKey) =>
+export const getPostCommentsNum = (postId) =>
+  fetch(`${api}/posts/${postId}/comments`, { headers })
+    .then(res => res.json())
+    .then(data => data.length)
+
+export const getAllPosts = () =>
   fetch(`${api}/posts`, { headers })
     .then(res => res.json())
-    .then(data => data.filter(p => p.deleted === false)
-                      .sort(sortByKey(sortKey)))
+    .then(data => data)
 
 export const getAllCategories = () =>
   fetch(`${api}/categories`, { headers })

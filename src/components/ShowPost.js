@@ -3,65 +3,66 @@ import Post from './Post';
 import Comments from './Comments';
 import NavBar from './NavBar';
 import AddCommentForm from './AddCommentForm';
-import { fetchPostComments, fetchPost, changeCommentSortKey } from '../actions';
+import { fetchPostComments, changeCommentSortKey } from '../actions';
 import { connect } from 'react-redux';
 
 class ShowPost extends Component {
 
   componentWillMount = () => {
     const postId = this.props.match.params.postId;
-    const sortKey = this.props.commentsSortKey;
-    this.props.getPostComments(postId, sortKey);
-    this.props.getPost(postId);
+    this.props.getPostComments(postId);
   }
 
   handleSortChange = (e) => {
     const sortKey = e.target.value;
     this.props.changeCommentSortKey(sortKey);
-    this.sortComments(sortKey);
-  }
-
-  sortComments(sortKey) {
-    const postId = this.props.match.params.postId;
-    this.props.getPostComments(postId, sortKey);
   }
 
   render() {
-    const post = this.props.post;
+    const postId = this.props.match.params.postId;
     const comments = this.props.comments;
     const sortKey = this.props.commentsSortKey;
-    return (
-      <div>
-        <NavBar detail={true} />
-        <Post post={post} detail={true} />
+    const possiblePosts = this.props.posts.filter(p => p.id === postId && p.deleted !== true);
+    if (possiblePosts.length > 0) {
+      return (
         <div>
-          <AddCommentForm parentId={post.id} />
-          <div className="comments-content">
-            <h3>Comments</h3>
-            {
-              <label for="select-comments-sort" className="sort-comments-label">
-                <p>Sort By</p>
-                <select id="select-comments-sort" value={sortKey} onChange={this.handleSortChange.bind(this)} >
-                  <option value="voteScore" selected={sortKey === 'voteScore'} >
-                    Most Votes
-                  </option>
-                  <option value="timestamp" selected={sortKey === 'timestamp'}>
-                    Most Recent
-                  </option>
-                </select>
-              </label>
-            }
-            <Comments comments={comments} />
+          <NavBar detail={true} />
+          <Post postId={postId} detail={true} />
+          <div>
+            <AddCommentForm parentId={postId} />
+            <div className="comments-content">
+              <h3>Comments</h3>
+              {
+                <label for="select-comments-sort" className="sort-comments-label">
+                  <p>Sort By</p>
+                  <select id="select-comments-sort" value={sortKey} onChange={this.handleSortChange.bind(this)} >
+                    <option value="voteScore" selected={sortKey === 'voteScore'} >
+                      Most Votes
+                    </option>
+                    <option value="timestamp" selected={sortKey === 'timestamp'}>
+                      Most Recent
+                    </option>
+                  </select>
+                </label>
+              }
+              <Comments comments={comments} />
+            </div>
           </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return (
+        <div>
+          <NavBar detail={true} />
+          <div className="page-not-found">No Post Found</div>
+        </div>
+      )
+    }
   }
 }
 
 function mapStateToProps (state) {
   return {
-    post: state.post,
     posts: state.posts,
     comments: state.comments,
     commentsSortKey: state.commentsSortKey
@@ -70,8 +71,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPost: (id) => dispatch(fetchPost(id)),
-    getPostComments: (id, sortKey) => dispatch(fetchPostComments(id, sortKey)),
+    getPostComments: (id) => dispatch(fetchPostComments(id)),
     changeCommentSortKey: (key) => dispatch(changeCommentSortKey(key))
   }
 }

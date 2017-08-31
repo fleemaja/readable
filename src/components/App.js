@@ -10,13 +10,9 @@ import { BrowserRouter, Switch } from 'react-router-dom';
 
 class App extends Component {
 
-  sortPosts(sortKey) {
-    this.props.getPosts(sortKey);
-  }
-
   componentWillMount = () => {
     this.props.getCategories();
-    this.props.getPosts(this.props.sortKey);
+    this.props.getPosts();
     const width = window.innerWidth;
     if (width < 768) {
       this.props.setFilterVisibility('slide-out');
@@ -37,7 +33,6 @@ class App extends Component {
                   <NavBar toggleFilters={this.toggleFilters.bind(this)} />
                   <Posts {...props} />
                   <Filters slideClass={this.props.filtersSlideClass}
-                           sortPosts={this.sortPosts.bind(this)}
                            {...props} />
                 </div>
               )}
@@ -59,7 +54,7 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getPosts: (sortKey) => dispatch(fetchPosts(sortKey)),
+    getPosts: () => dispatch(fetchPosts()),
     getCategories: () => dispatch(fetchCategories()),
     setFilterVisibility: (visibility) => dispatch(setFilterVisibility(visibility))
   }

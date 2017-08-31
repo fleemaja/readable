@@ -34,6 +34,12 @@ class AddPostForm extends Component {
 
     const post = this.props.postToAdd;
     this.props.addPost(post).then(this.toggleModal());
+
+    const initialPostState = {
+      author: '', body: '',
+      title: '', category: 'react'
+    }
+    this.props.changePostToAdd(initialPostState);
   }
 
   handleInput(e) {

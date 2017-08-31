@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import Comment from './Comment';
+import { connect } from 'react-redux';
 
 class Comments extends Component {
 
   render() {
+    const sortByKey = (sortKey) => (a, b) => a[sortKey] < b[sortKey];
     return (
       <div className="Comments">
         {
-          this.props.comments.map((c) =>
-            <Comment key={c.timestamp}
+          this.props.comments
+            .sort(sortByKey(this.props.commentSortKey))
+            .map((c) =>
+              <Comment key={c.timestamp}
                      comment={c} />
           )
         }
@@ -17,4 +21,12 @@ class Comments extends Component {
   }
 }
 
-export default Comments;
+function mapStateToProps (state) {
+  return {
+    commentSortKey: state.commentSortKey
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(Comments);

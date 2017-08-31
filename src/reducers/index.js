@@ -23,6 +23,7 @@ import {
   CHANGE_POST_SORT_KEY,
   CHANGE_COMMENT_SORT_KEY,
   SET_FILTER_VISIBILITY,
+  RECEIVE_POST_COMMENTS_NUM,
   UPDATE_POST_COMMENTS_NUM_MAP
 } from '../actions'
 
@@ -227,6 +228,15 @@ function postCommentsNumMap(state = {}, action) {
   }
 }
 
+function postCommentsNum(state = 0, action) {
+  switch (action.type) {
+    case RECEIVE_POST_COMMENTS_NUM :
+      return action.num
+    default :
+      return state
+  }
+}
+
 export default combineReducers({
   posts,
   comments,
@@ -242,5 +252,6 @@ export default combineReducers({
   addPostModalIsOpen,
   editPostModalIsOpen,
   filtersSlideClass,
+  postCommentsNum,
   postCommentsNumMap
 })
