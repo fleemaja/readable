@@ -32,7 +32,6 @@ export const CHANGE_COMMENT_SORT_KEY = "CHANGE_COMMENT_SORT_KEY";
 
 export const SET_FILTER_VISIBILITY = "SET_FILTER_VISIBILITY";
 
-export const RECEIVE_POST_COMMENTS_NUM = "RECEIVE_POST_COMMENTS_NUM";
 export const UPDATE_POST_COMMENTS_NUM_MAP = "UPDATE_POST_COMMENTS_NUM_MAP";
 
 export const receivePosts = posts => ({
@@ -49,11 +48,6 @@ export const receiveCategories = categories => ({
   type: RECEIVE_CATEGORIES,
   categories
 });
-
-export const receivePostCommentsNum = num => ({
-    type: RECEIVE_POST_COMMENTS_NUM,
-    num
-})
 
 export const receivePost = post => ({
   type: RECEIVE_POST,
@@ -236,7 +230,7 @@ export const fetchPostComments = (id) => dispatch => (
 export const getPostCommentsNum = (id) => dispatch => (
   ReadableAPI
       .getPostCommentsNum(id)
-      .then(num => dispatch(receivePostCommentsNum(num)))
+      .then(num => num)
 );
 
 export const fetchPosts = () => dispatch => (

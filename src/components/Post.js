@@ -12,7 +12,7 @@ class Post extends Component {
   componentWillMount = () => {
     const postId = this.props.postId;
     this.props.getPostCommentsNum(postId).then(function(num) {
-      this.props.updatePostCommentsNumMap(postId, num.num)
+      this.props.updatePostCommentsNumMap(postId, num)
     }.bind(this));
   }
 
