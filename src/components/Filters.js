@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { changePostSortKey } from '../actions';
+import { changePostSortKey } from '../actions/postSortKey';
 import AddPostForm from './AddPostForm';
 
 class Filters extends Component {

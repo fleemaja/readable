@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { apiAddComment, changeAddCommentForm } from '../actions';
+import { apiAddComment } from '../actions/comments';
+import { changeAddCommentForm } from '../actions/commentToAdd';
 import { connect } from 'react-redux';
 
 class AddCommentForm extends Component {

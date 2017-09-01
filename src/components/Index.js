@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchPosts, fetchCategories, setFilterVisibility } from '../actions';
+import { fetchPosts } from '../actions/posts';
+import { fetchCategories } from '../actions/categories';
+import { setFilterVisibility } from '../actions/filtersSlideClass';
 import NavBar from './NavBar';
 import Posts from './Posts';
 import Filters from './Filters';

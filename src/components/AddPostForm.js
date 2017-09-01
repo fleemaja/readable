@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import { apiAddPost, toggleAddPostModal, changeAddPostForm } from '../actions';
+import { apiAddPost } from '../actions/posts';
+import { toggleAddPostModal } from '../actions/addPostModalIsOpen';
+import { changeAddPostForm } from '../actions/postToAdd';
 import { connect } from 'react-redux';
 import { FaClose } from 'react-icons/lib/fa';
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import EditCommentForm from './EditCommentForm';
-import { apiCommentVote, apiCommentDelete } from '../actions';
+import { apiCommentVote, apiCommentDelete } from '../actions/comments';
 import { connect } from 'react-redux';
 import { FaCaretUp, FaCaretDown, FaClose } from 'react-icons/lib/fa';
 import moment from 'moment';

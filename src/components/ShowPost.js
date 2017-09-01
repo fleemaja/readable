@@ -3,7 +3,8 @@ import Post from './Post';
 import Comments from './Comments';
 import NavBar from './NavBar';
 import AddCommentForm from './AddCommentForm';
-import { fetchPostComments, changeCommentSortKey } from '../actions';
+import { fetchPostComments } from '../actions/comments';
+import { changeCommentSortKey } from '../actions/commentSortKey';
 import { connect } from 'react-redux';
 
 class ShowPost extends Component {

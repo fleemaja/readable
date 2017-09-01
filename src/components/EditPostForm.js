@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import { apiEditPost, toggleEditPostModal, changeEditPostForm  } from '../actions';
+import { apiEditPost  } from '../actions/posts';
+import { toggleEditPostModal  } from '../actions/editPostModalIsOpen';
+import { changeEditPostForm  } from '../actions/postToEdit';
 import { connect } from 'react-redux';
 import { FaEdit, FaClose } from 'react-icons/lib/fa';
 

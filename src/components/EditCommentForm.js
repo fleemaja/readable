@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import { apiEditComment, toggleEditCommentModal, changeEditCommentForm } from '../actions';
+import { apiEditComment } from '../actions/comments';
+import { toggleEditCommentModal } from '../actions/editCommentModalIsOpen';
+import { changeEditCommentForm } from '../actions/commentToEdit';
 import { connect } from 'react-redux';
 import { FaEdit, FaClose } from 'react-icons/lib/fa';
 
