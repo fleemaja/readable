@@ -56,11 +56,8 @@ class Filters extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    categories: state.categories,
-    postSortKey: state.postSortKey
-  }
+function mapStateToProps({ categories, postSortKey }) {
+  return { categories, postSortKey }
 }
 
 function mapDispatchToProps(dispatch) {

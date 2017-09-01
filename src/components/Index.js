@@ -32,11 +32,8 @@ class Index extends Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-    postSortKey: state.postSortKey,
-    filtersSlideClass: state.filtersSlideClass
-  }
+function mapStateToProps ({ postSortKey, filtersSlideClass }) {
+  return { postSortKey, filtersSlideClass }
 }
 
 function mapDispatchToProps(dispatch) {

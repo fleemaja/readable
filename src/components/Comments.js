@@ -21,10 +21,8 @@ class Comments extends Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-    commentSortKey: state.commentSortKey
-  }
+function mapStateToProps ({ commentSortKey }) {
+  return { commentSortKey }
 }
 
 export default connect(

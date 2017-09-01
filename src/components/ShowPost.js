@@ -61,12 +61,8 @@ class ShowPost extends Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-    posts: state.posts,
-    comments: state.comments,
-    commentsSortKey: state.commentsSortKey
-  }
+function mapStateToProps ({ posts, comments, commentsSortKey }) {
+  return { posts, comments, commentsSortKey }
 }
 
 function mapDispatchToProps(dispatch) {

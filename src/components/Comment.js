@@ -42,10 +42,8 @@ class Comment extends Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-    comments: state.comments
-  }
+function mapStateToProps ({ comments }) {
+  return { comments }
 }
 
 function mapDispatchToProps(dispatch) {

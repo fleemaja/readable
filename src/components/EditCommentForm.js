@@ -50,7 +50,7 @@ class EditCommentForm extends Component {
 
   toggleModal() {
     // if modal is being opened change state of comment to edit
-    if (!this.props.modalIsOpen) {
+    if (!this.props.editCommentModalIsOpen) {
       const comment = this.props.comment;
       const c = { commentId: comment.id,
                   body: comment.body,
@@ -67,7 +67,7 @@ class EditCommentForm extends Component {
       <div className="modal">
         <FaEdit className="edit-button" onClick={this.toggleModal} />
         <Modal
-          isOpen={this.props.modalIsOpen}
+          isOpen={this.props.editCommentModalIsOpen}
           onRequestClose={this.toggleModal}
           style={customStyles}
           contentLabel="Edit Comment"
@@ -97,12 +97,8 @@ class EditCommentForm extends Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-    comments: state.comments,
-    commentToEdit: state.commentToEdit,
-    modalIsOpen: state.editCommentModalIsOpen
-  }
+function mapStateToProps ({ comments, commentToEdit, editCommentModalIsOpen }) {
+  return { comments, commentToEdit, editCommentModalIsOpen }
 }
 
 function mapDispatchToProps(dispatch) {

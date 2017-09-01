@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import EditPostForm from './EditPostForm';
-import { apiPostVote, apiPostDelete, 
+import { apiPostVote, apiPostDelete,
          getPostCommentsNum, updatePostCommentsNumMap } from '../actions';
 import { connect } from 'react-redux';
 import { FaCaretUp, FaCaretDown, FaClose } from 'react-icons/lib/fa';
@@ -62,11 +62,8 @@ class Post extends Component {
    }
 }
 
-function mapStateToProps (state) {
-  return {
-    posts: state.posts,
-    postCommentsNumMap: state.postCommentsNumMap
-  }
+function mapStateToProps ({ posts, postCommentsNumMap }) {
+  return { posts, postCommentsNumMap }
 }
 
 function mapDispatchToProps(dispatch) {

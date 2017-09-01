@@ -50,11 +50,8 @@ class AddCommentForm extends Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-    comments: state.comments,
-    commentToAdd: state.commentToAdd
-  }
+function mapStateToProps ({ comments, commentToAdd }) {
+  return { comments, commentToAdd }
 }
 
 function mapDispatchToProps(dispatch) {

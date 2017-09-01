@@ -62,7 +62,7 @@ class AddPostForm extends Component {
       <div className="modal add-modal">
         <button className="add" onClick={this.toggleModal}>+ Add Post</button>
         <Modal
-          isOpen={this.props.modalIsOpen}
+          isOpen={this.props.addPostModalIsOpen}
           onRequestClose={this.toggleModal}
           style={customStyles}
           contentLabel="Add Post"
@@ -110,12 +110,8 @@ class AddPostForm extends Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-    categories: state.categories,
-    modalIsOpen: state.addPostModalIsOpen,
-    postToAdd: state.postToAdd
-  }
+function mapStateToProps ({ categories, addPostModalIsOpen, postToAdd }) {
+  return { categories, addPostModalIsOpen, postToAdd }
 }
 
 function mapDispatchToProps(dispatch) {

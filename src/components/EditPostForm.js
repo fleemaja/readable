@@ -51,7 +51,7 @@ class EditPostForm extends Component {
 
   toggleModal() {
     // if modal is being opened change state of post to edit
-    if (!this.props.modalIsOpen) {
+    if (!this.props.editPostModalIsOpen) {
       const post = this.props.post;
       const p = { postId: post.id, body: post.body,
                   author: post.author, title: post.title,
@@ -68,7 +68,7 @@ class EditPostForm extends Component {
       <div className="modal">
         <FaEdit className="edit-button" onClick={this.toggleModal} />
         <Modal
-          isOpen={this.props.modalIsOpen}
+          isOpen={this.props.editPostModalIsOpen}
           onRequestClose={this.toggleModal}
           style={customStyles}
           contentLabel="Edit Post"
@@ -117,12 +117,8 @@ class EditPostForm extends Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-    postToEdit: state.postToEdit,
-    categories: state.categories,
-    modalIsOpen: state.editPostModalIsOpen
-  }
+function mapStateToProps ({ postToEdit, categories, editPostModalIsOpen }) {
+  return { postToEdit, categories, editPostModalIsOpen }
 }
 
 function mapDispatchToProps(dispatch) {

@@ -23,11 +23,8 @@ class Posts extends Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {
-    posts: state.posts,
-    postSortKey: state.postSortKey
-  }
+function mapStateToProps ({ posts, postSortKey }) {
+  return { posts, postSortKey }
 }
 
 export default connect(
